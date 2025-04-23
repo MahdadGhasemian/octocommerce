@@ -1,0 +1,220 @@
+---
+# General
+service_directory_path: /opt/services
+docker_compose_file_path: "{{ service_directory_path }}/docker-compose.yml"
+domain_name: test.ir
+
+# Nginx
+nginx_image: nginx:latest
+nginx_container_name: nginx
+nginx_http_port: 80
+nginx_https_port: 443
+nginx_conf_path: "{{ service_directory_path }}/nginx.conf"
+nginx_ssl_certificate: "{{ service_directory_path }}/ssl_certificate.crt"
+nginx_ssl_certificate_key: "{{ service_directory_path }}/ssl_certificate.key"
+nginx_server_name_pgadmin: "pgadmin.{{ domain_name }}"
+nginx_server_name_redis_insight: "redisinsight.{{ domain_name }}"
+nginx_server_name_rabbitmq: "rabbitmq.{{ domain_name }}"
+nginx_server_name_minio_console: "minio.{{ domain_name }}"
+nginx_server_name_api: "api.{{ domain_name }}"
+
+# PostgreSQL
+postgres_image: postgres:15
+postgres_container_name: postgres
+postgres_container_port: 5432
+postgres_db: postgres
+postgres_user: admin
+postgres_password: randompassword
+postgres_port:
+postgres_volume_name: postgres_data
+postgres_seed_data: "{{ service_directory_path }}/seed-data.sql"
+
+# PgAdmin
+pgadmin_image: elestio/pgadmin
+pgadmin_container_name: pgadmin
+pgadmin_user: "test@{{ domain_name }}"
+pgadmin_password: randompassword
+pgadmin_container_port: 8080
+pgadmin_port:
+pgadmin_volume_name: pgadmin_data
+
+# RabbitMQ
+rabbitmq_image: rabbitmq:3.10-management
+rabbitmq_container_name: rabbitmq
+rabbitmq_container_port: 5672
+rabbitmq_manager_container_port: 15672
+rabbitmq_port:
+rabbitmq_manager_port:
+rabbitmq_user: admin
+rabbitmq_password: randompassword
+rabbitmq_volume_name: rabbitmq_data
+
+# Redis
+redis_image: bitnami/redis
+redis_container_name: redis
+redis_container_port: 6379
+redis_port:
+redis_password: randompassword
+redis_volume_name: redis_data
+
+# Redis Insight
+redis_insight_image: redis/redisinsight
+redis_insight_container_name: redisinsight
+redis_insight_container_port: 5540
+redis_insight_port:
+redis_inside_auth_htpasswd: "{{ service_directory_path }}/.htpasswd"
+redis_insight_volume_name: redisinsight_data
+
+# Minio
+minio_image: bitnami/minio
+minio_container_name: minio
+minio_server_container_port: 9000
+minio_console_container_port: 9001
+minio_server_port:
+minio_console_port:
+minio_root_user: admin
+minio_root_password: randompassword
+minio_volume_name: minio_data
+
+# Services Common Secrets
+services_common_secrets:
+  postgres_host: "{{ postgres_container_name }}"
+  postgres_port: "{{ postgres_container_port }}"
+  postgres_username: "{{ postgres_user }}"
+  postgres_password: "{{ postgres_password }}"
+  postgres_synchronize: false
+  postgres_auto_load_entities: false
+  rabbitmq_uri: "amqp://{{ rabbitmq_user }}:{{ rabbitmq_password }}@{{ rabbitmq_container_name }}:{{ rabbitmq_container_port }}/"
+  rabbitmq_default_user: "{{ rabbitmq_user }}"
+  rabbitmq_default_pass: "{{ rabbitmq_password }}"
+  redis_host: "{{ redis_container_name }}"
+  redis_port: "{{ redis_container_port }}"
+  redis_password: "{{ redis_password }}"
+  redis_cache_ttl_global: 86400000
+
+# Services Common Config
+services_common_config:
+  rabbitmq_auth_queue_name: "production_auth"
+  rabbitmq_bot_queue_name: "production_bot"
+  rabbitmq_file_queue_name: "production_file"
+  rabbitmq_notification_queue_name: "production_notification"
+  rabbitmq_storage_queue_name: "production_storage"
+  rabbitmq_store_queue_name: "production_store"
+  log_level: "debug"
+  cors_origins: "https://{{ domain_name }},https://www.{{ domain_name }},https://panel.{{ domain_name }}"
+
+# Auth
+auth_image: mahdad1988/octo-commerce-auth
+auth_container_name: auth
+auth_container_port: 4000
+auth_postgre_database_name: "production_auth"
+auth_redis_cache_key_prefix: "production_auth"
+auth_swagger_server_host: "https://api.{{ domain_name }}/auth/"
+
+# Bot
+bot_image: mahdad1988/octo-commerce-bot
+bot_container_name: bot
+bot_container_port: 4000
+bot_postgre_database_name: "production_bot"
+bot_redis_cache_key_prefix: "production_bot"
+bot_swagger_server_host: "https://api.{{ domain_name }}/bot/"
+
+# File
+file_image: mahdad1988/octo-commerce-file
+file_container_name: file
+file_container_port: 4000
+file_postgre_database_name: "production_file"
+file_redis_cache_key_prefix: "production_file"
+file_swagger_server_host: "https://api.{{ domain_name }}/file/"
+
+# NOTIFICATION
+notification_image: mahdad1988/octo-commerce-notification
+notification_container_name: notification
+notification_container_port: 4000
+notification_postgre_database_name: "production_notification"
+notification_redis_cache_key_prefix: "production_notification"
+notification_swagger_server_host: "https://api.{{ domain_name }}/notification/"
+
+# STORAGE
+storage_image: mahdad1988/octo-commerce-storage
+storage_container_name: storage
+storage_container_port: 4000
+storage_postgre_database_name: "production_storage"
+storage_redis_cache_key_prefix: "production_storage"
+storage_swagger_server_host: "https://api.{{ domain_name }}/storage/"
+
+# Store
+store_image: mahdad1988/octo-commerce-store
+store_container_name: store
+store_container_port: 4000
+store_postgre_database_name: "production_store"
+store_redis_cache_key_prefix: "production_store"
+store_swagger_server_host: "https://api.{{ domain_name }}/store/"
+
+# Common
+jwt_secret: "longsecretphrase"
+otp_sms_expiration: 120000
+otp_email_expiration: 600000
+cookie_config_secure: true
+cookie_config_same_site: "strict"
+cookie_config_domain: ".{{ domain_name }}"
+default_access_id: 3
+jwt_expiration: 2592000
+default_user_first_name: "کاربر"
+default_user_last_name: "کاربر"
+invoice_upload_url: "https://api.{{ domain_name }}/storage/public-files/invoice/"
+invoice_generate_temporary_path: "/usr/src/values/invoices_temporary"
+invoice_template_path: "/usr/src/templates"
+chromium_path: "/usr/bin/google-chrome"
+client_timezone: "Asia/Tehran"
+notification_access_read_expiration: 60000
+sms_melipeyamak_url: "https://rest.payamak-panel.com/api/SendSMS/BaseServiceNumber"
+sms_melipeyamak_username: "09129632744"
+sms_melipeyamak_password: "password"
+sms_melipeyamak_template_account_1: 10000
+sms_melipeyamak_template_account_2: 10000
+sms_melipeyamak_template_account_3: 10000
+sms_melipeyamak_template_account_4: 10000
+sms_melipeyamak_template_account_5: 10000
+sms_melipeyamak_template_order_1: 10000
+sms_melipeyamak_template_order_2: 10000
+sms_melipeyamak_template_order_3: 10000
+sms_melipeyamak_template_order_4: 10000
+sms_melipeyamak_template_order_5: 10000
+sms_melipeyamak_template_order_6: 10000
+sms_melipeyamak_template_payment_1: 10000
+sms_melipeyamak_template_payment_2: 10000
+sms_melipeyamak_template_payment_3: 10000
+sms_melipeyamak_template_payment_4: 10000
+sms_melipeyamak_template_payment_5: 10000
+sms_melipeyamak_template_payment_6: 10000
+sms_melipeyamak_template_delivery_1: 10000
+sms_melipeyamak_template_delivery_2: 10000
+sms_melipeyamak_template_delivery_3: 10000
+sms_melipeyamak_template_delivery_4: 10000
+sms_melipeyamak_template_delivery_5: 10000
+sms_melipeyamak_template_promotion_1: 10000
+sms_melipeyamak_template_promotion_2: 10000
+sms_melipeyamak_template_support_1: 10000
+sms_melipeyamak_template_support_2: 10000
+sms_melipeyamak_template_support_3: 10000
+sms_melipeyamak_template_interal_1: 10000
+sms_melipeyamak_template_interal_2: 10000
+sms_melipeyamak_template_interal_3: 10000
+minio_endpoint: "{{ minio_container_name }}"
+minio_access_key: "access-key"
+minio_secret_key: "secret-key"
+minio_use_ssl: false
+minio_port: "{{ minio_server_container_port }}"
+minio_base_url: "https://cdn.{{ domain_name }}/"
+upload_file_max_size: 10485760
+base_private_url_download: "https://api.{{ domain_name }}/storage/private-files/"
+base_public_url_download: "https://api.{{ domain_name }}/storage/public-files/"
+invoice_download_url: "https://cdn.{{ domain_name }}/public-documents-invoice/"
+payment_sadad_merchant_id: "123456789123456789"
+payment_sadad_termianl_id: "123456789"
+payment_sadad_terminal_key: "abcdxyz"
+payment_sadad_return_url: "https://api.{{ domain_name }}/store/payments/result/sadad/"
+payment_redirect_to_website_url: "https://{{ domain_name }}/payment/status/"
+sale_support_phone_number_1: "09129632744"
+website_orders_link: "https://{{ domain_name }}/profile/orders/"

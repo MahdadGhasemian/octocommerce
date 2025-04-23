@@ -1,0 +1,43 @@
+---
+- name: Setup
+  hosts: server-1
+  become: true
+  gather_facts: true
+  roles:
+    - role: docker
+    - role: services
+      vars:
+        domain_name: "{{ domain_name_url }}"
+
+        nginx_server_name_pgadmin: "{{ pgadmin_domain_name }}"
+        nginx_server_name_redis_insight: "{{ redis_insight_domain_name }}"
+        nginx_server_name_rabbitmq: "{{ rabbitmq_domain_name }}"
+        nginx_server_name_minio_console: "{{ minio_domain_name }}"
+        nginx_server_name_api: "{{ api_domain_name }}"
+
+        postgres_user: "{{ secrets.postgres_user }}"
+        postgres_password: "{{ secrets.postgres_password }}"
+        postgres_port: "{{ secrets.postgres_external_port }}"
+        pgadmin_user: "{{ secrets.pgadmin_user }}"
+        pgadmin_password: "{{ secrets.pgadmin_password }}"
+        rabbitmq_user: "{{ secrets.rabbitmq_user }}"
+        rabbitmq_password: "{{ secrets.rabbitmq_password }}"
+        redis_password: "{{ secrets.redis_password }}"
+        minio_root_user: "{{ secrets.minio_root_user }}"
+        minio_root_password: "{{ secrets.minio_root_password }}"
+
+        jwt_secret: "{{ services_config.jwt_secret }}"
+        otp_sms_expiration: "{{ services_config.otp_sms_expiration }}"
+        otp_email_expiration: "{{ services_config.otp_email_expiration }}"
+        jwt_expiration: "{{ services_config.jwt_expiration }}"
+        default_user_first_name: "{{ services_config.default_user_first_name }}"
+        default_user_last_name: "{{ services_config.default_user_last_name }}"
+        client_timezone: "{{ services_config.client_timezone }}"
+        sms_melipeyamak_username: "{{ services_config.sms_melipeyamak_username }}"
+        sms_melipeyamak_password: "{{ services_config.sms_melipeyamak_password }}"
+        minio_access_key: "{{ services_config.minio_access_key }}"
+        minio_secret_key: "{{ services_config.minio_secret_key }}"
+        payment_sadad_merchant_id: "{{ services_config.payment_sadad_merchant_id }}"
+        payment_sadad_termianl_id: "{{ services_config.payment_sadad_termianl_id }}"
+        payment_sadad_terminal_key: "{{ services_config.payment_sadad_terminal_key }}"
+        sale_support_phone_number_1: "{{ services_config.sale_support_phone_number_1 }}"

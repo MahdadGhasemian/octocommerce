@@ -1,0 +1,11 @@
+export const BaseClientUrl = process.env.NEXT_PUBLIC_APP_URL;
+export const BaseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+export const BaseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+export const NODE_ENV = process.env.NODE_ENV;
+export const ClientSession = process.env.NEXT_PUBLIC_CLIENT_SESSION;
+export const ShowLogger = process.env.NEXT_PUBLIC_SHOW_LOGGER === 'true';
+export const PageSizeNumber = 20;
+export const MapCenterLatitude = 35.7172;
+export const MapCenterLongitude = 51.3995;
+export const DefaultUserFirstName = 'کاربر';
+export const DefaultUserLastName = 'اُکتو کامرس';

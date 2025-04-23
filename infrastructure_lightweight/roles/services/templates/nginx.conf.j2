@@ -1,0 +1,159 @@
+# RabbitMQ
+server {
+    listen 443 ssl;
+    listen [::]:443;
+    server_name {{ nginx_server_name_rabbitmq }};
+
+    client_max_body_size 100M;
+
+    ssl_certificate /etc/nginx/ssl/ssl_certificate.crt;
+    ssl_certificate_key /etc/nginx/ssl/ssl_certificate.key;
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_pass http://{{ rabbitmq_container_name }}:{{ rabbitmq_manager_container_port }};
+    }
+}
+
+# Minio
+server {
+    listen 443 ssl;
+    listen [::]:443;
+    server_name {{ nginx_server_name_minio_console }};
+
+    client_max_body_size 100M;
+
+    ssl_certificate /etc/nginx/ssl/ssl_certificate.crt;
+    ssl_certificate_key /etc/nginx/ssl/ssl_certificate.key;
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_pass http://{{ minio_container_name }}:{{ minio_console_container_port }};
+    }
+}
+
+# PgAdmin
+server {
+    listen 443 ssl;
+    listen [::]:443;
+    server_name {{ nginx_server_name_pgadmin }};
+
+    client_max_body_size 100M;
+
+    ssl_certificate /etc/nginx/ssl/ssl_certificate.crt;
+    ssl_certificate_key /etc/nginx/ssl/ssl_certificate.key;
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_pass http://{{ pgadmin_container_name }}:{{ pgadmin_container_port }};
+    }
+}
+
+# Redis Insight
+server {
+    listen 443 ssl;
+    listen [::]:443;
+    server_name {{ nginx_server_name_redis_insight }};
+
+    client_max_body_size 100M;
+
+    ssl_certificate /etc/nginx/ssl/ssl_certificate.crt;
+    ssl_certificate_key /etc/nginx/ssl/ssl_certificate.key;
+
+    location / {
+        # Enable HTTP Basic Authentication
+        auth_basic "Restricted Access";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_pass http://{{ redis_insight_container_name }}:{{ redis_insight_container_port }};
+    }
+}
+
+# API
+server {
+    listen 443 ssl;
+    listen [::]:443;
+    server_name {{ nginx_server_name_api }};
+
+    client_max_body_size 100M;
+
+    ssl_certificate /etc/nginx/ssl/ssl_certificate.crt;
+    ssl_certificate_key /etc/nginx/ssl/ssl_certificate.key;
+
+    location /auth/ {
+        proxy_redirect     off;
+
+        proxy_set_header   Host $host;
+        proxy_set_header   X-Real-IP $remote_addr;
+        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   X-Forwarded-Host $server_name;
+
+        proxy_pass http://{{ auth_container_name }}:{{ auth_container_port }}/;
+    }
+
+    location /store/ {
+        proxy_redirect     off;
+
+        proxy_set_header   Host $host;
+        proxy_set_header   X-Real-IP $remote_addr;
+        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   X-Forwarded-Host $server_name;
+
+        proxy_pass http://{{ store_container_name }}:{{ store_container_port }}/;
+    }
+
+    location /storage/ {
+        proxy_redirect     off;
+
+        proxy_set_header   Host $host;
+        proxy_set_header   X-Real-IP $remote_addr;
+        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   X-Forwarded-Host $server_name;
+
+        proxy_pass http://{{ storage_container_name }}:{{ storage_container_port }}/;
+    }
+
+    location /notification/ {
+        proxy_redirect     off;
+
+        proxy_set_header   Host $host;
+        proxy_set_header   X-Real-IP $remote_addr;
+        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   X-Forwarded-Host $server_name;
+
+        proxy_pass http://{{ notification_container_name }}:{{ notification_container_port }}/;
+    }
+
+    location /file/ {
+        proxy_redirect     off;
+
+        proxy_set_header   Host $host;
+        proxy_set_header   X-Real-IP $remote_addr;
+        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   X-Forwarded-Host $server_name;
+
+        proxy_pass http://{{ file_container_name }}:{{ file_container_port }}/;
+    }
+}

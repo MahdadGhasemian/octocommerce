@@ -1,0 +1,49 @@
+# Ansible-related
+*.retry
+*.log
+*.tmp
+
+# SSH and secrets
+*.pem
+*.key
+*.crt
+*.vault
+*.enc
+*.secret
+.id_rsa*
+.ssh/
+
+# Inventory secrets
+group_vars/*vault*
+host_vars/*vault*
+vault_pass.txt
+
+# Python-related (if you're using any python scripts or virtualenv)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Editor/IDE files
+*.swp
+*.swo
+*.swn
+.idea/
+.vscode/
+.DS_Store
+
+# System files
+Thumbs.db
+
+# Vagrant
+.vagrant
+
+# Inventory (ignore specific inventory files)
+inventory.yml
+inventory/*.yml
+inventory/*.ini
+inventory-init.yml
+
+**/.htpasswd
+**/ssl_certificate.crt
+**/ssl_certificate.key
