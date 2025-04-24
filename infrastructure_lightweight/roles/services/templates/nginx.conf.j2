@@ -156,8 +156,21 @@ server {
 
         proxy_pass http://{{ file_container_name }}:{{ file_container_port }}/;
     }
+}
 
-    location /panel/ {
+# Panel
+server {
+    listen 443 ssl;
+    listen [::]:443;
+    server_name {{ nginx_server_name_panel }};
+
+    client_max_body_size 100M;
+
+    ssl_certificate /etc/nginx/ssl/ssl_certificate.crt;
+    ssl_certificate_key /etc/nginx/ssl/ssl_certificate.key;
+
+
+    location / {
         proxy_redirect     off;
 
         proxy_set_header   Host $host;
@@ -166,6 +179,6 @@ server {
         proxy_set_header   X-Forwarded-Proto $scheme;
         proxy_set_header   X-Forwarded-Host $server_name;
 
-        proxy_pass http://{{ panel_container_name }}:{{ panel_container_port }}/panel/;
+        proxy_pass http://{{ panel_container_name }}:{{ panel_container_port }}/;
     }
 }

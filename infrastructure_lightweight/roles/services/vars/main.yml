@@ -17,6 +17,7 @@ nginx_server_name_redis_insight: "redisinsight.{{ domain_name }}"
 nginx_server_name_rabbitmq: "rabbitmq.{{ domain_name }}"
 nginx_server_name_minio_console: "minio.{{ domain_name }}"
 nginx_server_name_api: "api.{{ domain_name }}"
+nginx_server_name_panel: "panel.{{ domain_name }}"
 
 # PostgreSQL
 postgres_image: postgres:15
@@ -154,7 +155,7 @@ store_swagger_server_host: "https://api.{{ domain_name }}/store/"
 # Panel
 panel_image: mahdad1988/octo-commerce-panel
 panel_container_name: panel
-panel_container_port: 4000
+panel_container_port: 3000
 
 
 # Common

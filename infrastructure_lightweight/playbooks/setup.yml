@@ -14,6 +14,7 @@
         nginx_server_name_rabbitmq: "{{ rabbitmq_domain_name }}"
         nginx_server_name_minio_console: "{{ minio_domain_name }}"
         nginx_server_name_api: "{{ api_domain_name }}"
+        nginx_server_name_panel: "{{ panel_domain_name }}"
 
         postgres_user: "{{ secrets.postgres_user }}"
         postgres_password: "{{ secrets.postgres_password }}"

@@ -7,7 +7,6 @@ const nextConfig = {
   trailingSlash: true,
   reactStrictMode: false,
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
-  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
   webpack: config => {
     config.resolve.alias = {
       ...config.resolve.alias,
