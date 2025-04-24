@@ -7,10 +7,6 @@ import {
   AccountGroupOutline,
   AccountKeyOutline,
   HomeOutline,
-  HomeImportOutline,
-  HomeExportOutline,
-  HomeSwitchOutline,
-  ClipboardListOutline,
   CogOutline,
   MessageProcessingOutline,
   TruckCargoContainer

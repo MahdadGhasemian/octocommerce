@@ -23,7 +23,6 @@ import TabDelivery from '@/components/view/TabDelivery'
 import { useSelector } from 'react-redux'
 import { selectSetting, setSetting } from '@/redux/slices/settingSlice'
 import { store } from '@/redux/store'
-import { isCustomerUser } from '@/redux/slices/authSlice'
 
 // ** Services Import
 import BasicService, { CategoryTree, Order, OrderStatus, PaymentStatus } from '@/services/basic.service'
@@ -61,7 +60,6 @@ const Invoice = (props: { categoriesTree: Array<CategoryTree> }) => {
 
   // ** Global State
   const setting = useSelector(selectSetting)
-  const isUser = useSelector(isCustomerUser)
 
   // ** Vars
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))

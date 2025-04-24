@@ -1,9 +1,6 @@
 // ** React Imports
 import { useState, SyntheticEvent, Fragment, ReactNode } from 'react'
 
-// ** Next Imports
-import { useRouter } from 'next/router'
-
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
@@ -103,7 +100,6 @@ const NotificationDropdown = () => {
 
   // ** Hook
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
-  const router = useRouter()
   const { settings } = useSettings()
 
   const handleDropdownOpen = (event: SyntheticEvent) => {

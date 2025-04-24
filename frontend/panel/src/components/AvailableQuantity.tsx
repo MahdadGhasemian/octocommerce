@@ -23,8 +23,6 @@ const AvailableQuantity = (props: Props) => {
   // ** Functions
   const handleAvailableQuantityUpdate = async () => {
     setLoading(true)
-    // const { available_quantity } = await basicService.updateInventoryStockVirtualy(product_id, availableQuantity)
-    // setAvailableQuantity(available_quantity)
     setAvailableQuantityChanged(false)
     setLoading(false)
   }
@@ -32,8 +30,6 @@ const AvailableQuantity = (props: Props) => {
   useEffect(() => {
     const fetchStock = async () => {
       setLoading(true)
-      // const { available_quantity } = await basicService.getInventoryStockVirtualy(product_id)
-      // setAvailableQuantity(available_quantity)
       setAvailableQuantityChanged(false)
       setLoading(false)
     }
