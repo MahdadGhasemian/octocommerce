@@ -21,6 +21,7 @@ services:
       - auth
       - store
       - panel
+      - website
 
   postgres:
     image: {{ postgres_image }}
@@ -391,6 +392,14 @@ services:
   panel:
     image: {{ panel_image }}
     container_name: {{ panel_container_name }}
+    restart: always
+    pull_policy: always
+    environment:
+      KEY_A: value
+  
+  website:
+    image: {{ website_image }}
+    container_name: {{ website_container_name }}
     restart: always
     pull_policy: always
     environment:
