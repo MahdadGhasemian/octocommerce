@@ -12,11 +12,11 @@ docker-compose up # --build
 
 ### Web UI Tools
 
-- [Store Doc](http://localhost:4058/auth/docs#)
-- [Store Doc](http://localhost:4058/bot/docs#)
-- [Store Doc](http://localhost:4058/file/docs#)
-- [Store Doc](http://localhost:4058/notification/docs#)
-- [Store Doc](http://localhost:4058/storage/docs#)
+- [Auth Doc](http://localhost:4058/auth/docs#)
+- [Bot Doc](http://localhost:4058/bot/docs#)
+- [File Doc](http://localhost:4058/file/docs#)
+- [Notification Doc](http://localhost:4058/notification/docs#)
+- [Storage Doc](http://localhost:4058/storage/docs#)
 - [Store Doc](http://localhost:4058/store/docs#)
 
 - [PgAdmin](http://localhost:8088/)
