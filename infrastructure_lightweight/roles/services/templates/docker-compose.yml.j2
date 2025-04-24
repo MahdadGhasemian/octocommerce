@@ -124,6 +124,7 @@ services:
     image: {{ auth_image }}
     container_name: {{ auth_container_name }}
     restart: always
+    pull_policy: always
     environment:
       HTTP_PORT_AUTH: {{ auth_container_port }}
 
@@ -152,7 +153,7 @@ services:
 
       POSTGRES_DATABASE_AUTH: {{ auth_postgre_database_name }}
       REDIS_CACHE_KEY_PREFIX_AUTH: {{ auth_redis_cache_key_prefix }}
-      SWAGGER_SERVER_HOST: {{ auth_swagger_server_host }}
+      SWAGGER_SERVER_HOST_AUTH: {{ auth_swagger_server_host }}
       JWT_SECRET: "{{ jwt_secret }}"
       OTP_SMS_EXPIRATION: {{ otp_sms_expiration }}
       OTP_EMAIL_EXPIRATION: {{ otp_email_expiration }}
@@ -173,6 +174,7 @@ services:
     image: {{ file_image }}
     container_name: {{ file_container_name }}
     restart: always
+    pull_policy: always
     environment:
       HTTP_PORT_FILE: {{ file_container_port }}
 
@@ -201,17 +203,23 @@ services:
 
       POSTGRES_DATABASE_FILE: {{ file_postgre_database_name }}
       REDIS_CACHE_KEY_PREFIX_FILE: {{ file_redis_cache_key_prefix }}
-      SWAGGER_SERVER_HOST: {{ file_swagger_server_host }}
+      SWAGGER_SERVER_HOST_FILE: {{ file_swagger_server_host }}
       INVOICE_UPLOAD_URL: {{ invoice_upload_url }}
       INVOICE_GENERATE_TEMPORARY_PATH: {{ invoice_generate_temporary_path }}
       INVOICE_TEMPLATE_PATH: {{ invoice_template_path }}
       CHROMIUM_PATH: {{ chromium_path }}
       CLIENT_TIMEZONE: {{ client_timezone }}
+
+    depends_on:
+      - rabbitmq
+      - postgres
+      - redis
   
   notification:
     image: {{ notification_image }}
     container_name: {{ notification_container_name }}
     restart: always
+    pull_policy: always
     environment:
       HTTP_PORT_NOTIFICATION: {{ notification_container_port }}
 
@@ -240,7 +248,7 @@ services:
 
       POSTGRES_DATABASE_NOTIFICATION: {{ notification_postgre_database_name }}
       REDIS_CACHE_KEY_PREFIX_NOTIFICATION: {{ notification_redis_cache_key_prefix }}
-      SWAGGER_SERVER_HOST: {{ notification_swagger_server_host }}
+      SWAGGER_SERVER_HOST_NOTIFICATION: {{ notification_swagger_server_host }}
       NOTIFICATION_ACCESS_READ_EXPIRATION: {{ notification_access_read_expiration }}
       SMS_MELIPEYAMAK_URL: {{ sms_melipeyamak_url }}
       SMS_MELIPEYAMAK_USERNAME: {{ sms_melipeyamak_username }}
@@ -278,10 +286,16 @@ services:
       SMS_MELIPEYAMAK_TEMPLATE_INTERAL_2: {{ sms_melipeyamak_template_interal_2 }}
       SMS_MELIPEYAMAK_TEMPLATE_INTERAL_3: {{ sms_melipeyamak_template_interal_3 }}
 
+    depends_on:
+      - rabbitmq
+      - postgres
+      - redis
+
   storage:
     image: {{ storage_image }}
     container_name: {{ storage_container_name }}
     restart: always
+    pull_policy: always
     environment:
       HTTP_PORT_STORAGE: {{ storage_container_port }}
 
@@ -310,7 +324,7 @@ services:
 
       POSTGRES_DATABASE_STORAGE: {{ storage_postgre_database_name }}
       REDIS_CACHE_KEY_PREFIX_STORAGE: {{ storage_redis_cache_key_prefix }}
-      SWAGGER_SERVER_HOST: {{ storage_swagger_server_host }}
+      SWAGGER_SERVER_HOST_STORAGE: {{ storage_swagger_server_host }}
       MINIO_ENDPOINT: {{ minio_endpoint }}
       MINIO_ACCESS_KEY: {{ minio_access_key }}
       MINIO_SECRET_KEY: {{ minio_secret_key }}
@@ -330,6 +344,7 @@ services:
     image: {{ store_image }}
     container_name: {{ store_container_name }}
     restart: always
+    pull_policy: always
     environment:
       HTTP_PORT_STORE: {{ store_container_port }}
 
@@ -358,7 +373,7 @@ services:
 
       POSTGRES_DATABASE_STORE: {{ store_postgre_database_name }}
       REDIS_CACHE_KEY_PREFIX_STORE: {{ store_redis_cache_key_prefix }}
-      SWAGGER_SERVER_HOST: {{ store_swagger_server_host }}
+      SWAGGER_SERVER_HOST_STORE: {{ store_swagger_server_host }}
       INVOICE_DOWNLOAD_URL: {{ invoice_download_url }}
       PAYMENT_SADAD_MERCHANT_ID: {{ payment_sadad_merchant_id }}
       PAYMENT_SADAD_TERMINAL_ID: {{ payment_sadad_termianl_id }}
@@ -367,11 +382,17 @@ services:
       PAYMENT_REDIRECT_TO_WEBSITE_URL: {{ payment_redirect_to_website_url }}
       SALE_SUPPORT_PHONE_NUMBER_1: {{ sale_support_phone_number_1 }}
       WEBSITE_ORDERS_LINK: {{ website_orders_link }}
+
+    depends_on:
+      - rabbitmq
+      - postgres
+      - redis
   
   panel:
     image: {{ panel_image }}
     container_name: {{ panel_container_name }}
     restart: always
+    pull_policy: always
     environment:
       KEY_A: value
 
