@@ -14,20 +14,33 @@ services:
       - notification
       - file
       - bot
+      - panel
+      - website
   
   # Frontend Services
-  # panel:
-  #   build:
-  #     context: ./frontend/panel
-  #     dockerfile: ./Dockerfile.dev
-  #     target: development
-  #   command: pnpm run dev
-  #   env_file:
-  #     - ./frontend/panel/.env
-  #   ports:
-  #     - "3007:3007"
-  #   volumes:
-  #     - ./frontend/panel:/usr/src/app
+  # Panel
+  panel:
+    build:
+      context: ./frontend/panel
+      dockerfile: ./Dockerfile.dev
+      target: development
+    command: pnpm run dev
+    env_file:
+      - ./frontend/panel/.env
+    volumes:
+      - ./frontend/panel:/usr/src/app
+
+  # Website
+  website:
+    build:
+      context: ./frontend/website
+      dockerfile: ./Dockerfile.dev
+      target: development
+    command: pnpm run dev
+    env_file:
+      - ./frontend/website/.env.local
+    volumes:
+      - ./frontend/website:/usr/src/app
 
   # Backend Services
   # Auth Service
@@ -38,9 +51,7 @@ services:
       target: development
     command: pnpm run start:dev auth
     env_file:
-      - ./backend/apps/auth/.env
-    ports:
-      - "3000:3000"
+      - ./backend/.env
     volumes:
       - ./backend:/usr/src/app
     depends_on:
@@ -55,9 +66,7 @@ services:
       target: development
     command: pnpm run start:dev store
     env_file:
-      - ./backend/apps/store/.env
-    ports:
-      - "3001:3001"
+      - ./backend/.env
     volumes:
       - ./backend:/usr/src/app
     depends_on:
@@ -72,9 +81,7 @@ services:
       target: development
     command: pnpm run start:dev storage
     env_file:
-      - ./backend/apps/storage/.env
-    ports:
-      - "3002:3002"
+      - ./backend/.env
     volumes:
       - ./backend:/usr/src/app
     depends_on:
@@ -89,9 +96,7 @@ services:
       target: development
     command: pnpm run start:dev notification
     env_file:
-      - ./backend/apps/notification/.env
-    ports:
-      - "3004:3004"
+      - ./backend/.env
     volumes:
       - ./backend:/usr/src/app
     depends_on:
@@ -106,9 +111,7 @@ services:
       target: development
     command: pnpm run start:dev file
     env_file:
-      - ./backend/apps/file/.env
-    ports:
-      - "3005:3005"
+      - ./backend/.env
     volumes:
       - ./backend:/usr/src/app
       - invoices_data:/usr/src/values/invoices_temporary
@@ -125,9 +128,7 @@ services:
       target: development
     command: pnpm run start:dev bot
     env_file:
-      - ./backend/apps/bot/.env
-    ports:
-      - "3006:3006"
+      - ./backend/.env
     volumes:
       - ./backend:/usr/src/app
     depends_on:

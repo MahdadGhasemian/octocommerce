@@ -15,7 +15,7 @@ async function bootstrap() {
     .setDescription('Store Manager')
     .setVersion('1.0')
     .addServer(
-      `${configService.getOrThrow<string>('SWAGGER_SERVER_HOST')}`,
+      `${configService.getOrThrow<string>('SWAGGER_SERVER_HOST_STORE')}`,
       'Server',
     )
     .addTag('Health')

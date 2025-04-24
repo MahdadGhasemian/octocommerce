@@ -12,7 +12,13 @@ docker-compose up # --build
 
 ### Web UI Tools
 
-- [Store Doc](http://localhost:3001/docs#)
+- [Store Doc](http://localhost:4058/auth/docs#)
+- [Store Doc](http://localhost:4058/bot/docs#)
+- [Store Doc](http://localhost:4058/file/docs#)
+- [Store Doc](http://localhost:4058/notification/docs#)
+- [Store Doc](http://localhost:4058/storage/docs#)
+- [Store Doc](http://localhost:4058/store/docs#)
+
 - [PgAdmin](http://localhost:8088/)
 - [Rabbitmq UI](http://localhost:15678/)
 - [Redis GUI](http://localhost:5548/)
@@ -26,7 +32,7 @@ ansible-playbook playbooks/check_connection.yml -i inventory.yml
 ansible-playbook playbooks/setup.yml -i inventory.yml
 ```
 
-### Web UI Tools
+### Web UI
 
 - [PgAdmin](https://pgadmin.octocommerce.ir/)
 - [Rabbitmq UI](https://rabbitmq.octocommerce.ir/)

@@ -48,4 +48,20 @@ pnpm install
 cd -
 
 echo ""
+echo "📦 Installing frontend dependencies..."
+echo "-------------------------------------"
+
+# Panel
+echo "🔧 Installing Panel dependencies..."
+cd frontend/panel
+pnpm install
+cd -
+
+# Website
+echo "🔧 Installing Website dependencies..."
+cd frontend/website
+pnpm install
+cd -
+
+echo ""
 echo "✅ All dependencies installed successfully!"

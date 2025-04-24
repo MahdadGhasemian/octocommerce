@@ -16,7 +16,7 @@ async function bootstrap() {
     .setDescription('Authentication Manager')
     .setVersion('1.0')
     .addServer(
-      `${configService.getOrThrow<string>('SWAGGER_SERVER_HOST')}`,
+      `${configService.getOrThrow<string>('SWAGGER_SERVER_HOST_AUTH')}`,
       'Server',
     )
     .addTag('Health')

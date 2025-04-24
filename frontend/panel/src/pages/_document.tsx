@@ -34,9 +34,16 @@ class CustomDocument extends Document {
             href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'
           />
           <link rel='apple-touch-icon' sizes='180x180' href='/images/apple-touch-icon.png' />
-          <link rel='shortcut icon' href='/images/favicon.png' />
-          <link rel='icon' sizes='192x192' href='/images/favicon-192x192.png' />
-          <link rel='mask-icon' href='/images/favicon.png' color='#000000' />
+          <link rel='shortcut icon' href={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/favicon.png`} />
+          <link
+            rel='icon'
+            sizes='192x192'
+            href={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/favicon-192x192.png`}
+          />
+          <link
+            rel='mask-icon'
+            href={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/favicon.png' color='#000000`}
+          />
 
           <link rel='sitemap' href='/sitemap.xml' type='application/xml' />
 
@@ -44,7 +51,7 @@ class CustomDocument extends Document {
             <meta {...header} key={`header-key-${index}`} />
           ))}
 
-          <link rel='stylesheet' href='/fonts/font.css' />
+          <link rel='stylesheet' href={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/fonts/font.css`} />
         </Head>
         <body>
           <Main />

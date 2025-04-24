@@ -43,7 +43,7 @@ const Empty = (props: Props) => {
             </Button>
           )}
         </Box>
-        {!isMobile && <img src='/images/pages/pose-m-1.png' alt='new user image' />}
+        {!isMobile && <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/pages/pose-m-1.png`} alt='new user image' />}
       </Box>
     </Box>
   )

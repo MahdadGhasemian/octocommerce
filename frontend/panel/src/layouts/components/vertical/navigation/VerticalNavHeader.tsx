@@ -62,7 +62,7 @@ const VerticalNavHeader = (props: Props) => {
             <Avatar
               alt='لوگو اُکتو کامرس'
               sx={{ width: '2.5rem', height: '2.5rem' }}
-              src='/images/favicon-32x32.png'
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/favicon-32x32.png`}
             />
 
             <HeaderTitle variant='h6' sx={{ ml: 3 }}>

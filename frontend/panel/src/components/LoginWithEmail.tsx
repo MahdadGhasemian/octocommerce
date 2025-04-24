@@ -102,7 +102,7 @@ const LoginWithEmail = () => {
         <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Img
             alt='لوگو اُکتو کامرس'
-            src='/images/octo-commerce.svg'
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/octo-commerce.png`}
             sx={{
               width: '15%',
               height: 'auto'

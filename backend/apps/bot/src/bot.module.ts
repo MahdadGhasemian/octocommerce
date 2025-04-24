@@ -16,7 +16,6 @@ import { redisStore } from 'cache-manager-redis-yet';
 import { APP_INTERCEPTOR, Reflector } from '@nestjs/core';
 import { UsersModule } from './users/users.module';
 // import { TelegramsModule } from './telegrams/telegrams.module';
-import { ScrapesModule } from './scrapes/scrapes.module';
 
 @Module({
   imports: [
@@ -52,7 +51,6 @@ import { ScrapesModule } from './scrapes/scrapes.module';
     HealthModule,
     UsersModule,
     // TelegramsModule,
-    ScrapesModule,
   ],
   providers: [
     {
