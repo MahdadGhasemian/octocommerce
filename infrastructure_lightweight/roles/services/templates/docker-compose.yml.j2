@@ -20,6 +20,7 @@ services:
       - minio
       - auth
       - store
+      - panel
 
   postgres:
     image: {{ postgres_image }}
@@ -366,6 +367,13 @@ services:
       PAYMENT_REDIRECT_TO_WEBSITE_URL: {{ payment_redirect_to_website_url }}
       SALE_SUPPORT_PHONE_NUMBER_1: {{ sale_support_phone_number_1 }}
       WEBSITE_ORDERS_LINK: {{ website_orders_link }}
+  
+  panel:
+    image: {{ panel_image }}
+    container_name: {{ panel_container_name }}
+    restart: always
+    environment:
+      KEY_A: value
 
 volumes:
   {{ postgres_volume_name }}:
