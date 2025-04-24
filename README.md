@@ -50,3 +50,4 @@ htpasswd -c ./roles/services/files/.htpasswd admin
 - host: redis
 - port: 6379
 - username: leave it empty (default)
+-
