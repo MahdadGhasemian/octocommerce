@@ -29,6 +29,7 @@ services:
       - ./frontend/panel/.env
     volumes:
       - ./frontend/panel:/usr/src/app
+      - panel_next_build_cache:/usr/src/app/.next
 
   # Website
   website:
@@ -41,6 +42,7 @@ services:
       - ./frontend/website/.env.local
     volumes:
       - ./frontend/website:/usr/src/app
+      - website_next_build_cache:/usr/src/app/.next
 
   # Backend Services
   # Auth Service
@@ -238,3 +240,5 @@ volumes:
   minio_data:
   rabbitmq_data:
   invoices_data:
+  panel_next_build_cache:
+  website_next_build_cache:

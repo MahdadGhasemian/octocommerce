@@ -23,8 +23,7 @@ const AvailableQuantity = (data: Props) => {
     const fetchAvailableQuantity = async () => {
       try {
         setIsLoading(true);
-        const { available_quantity } =
-          await basicService.getStockProductVirtualy(product_id);
+        const available_quantity  = 0;
 
         setAvailableQuantity(available_quantity);
         onAvailableQuantityChange(available_quantity);

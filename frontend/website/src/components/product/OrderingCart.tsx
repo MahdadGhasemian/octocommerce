@@ -100,7 +100,7 @@ const OrderingCart: React.FC<Props> = (data: Props) => {
     const fetchAvailableQuantity = async () => {
       try {
         setIsLoading(true)
-        const { available_quantity } = await basicService.getStockProductVirtualy(id)
+        const available_quantity = 0
 
         setAvailableQuantity(available_quantity)
       } catch (error) {
