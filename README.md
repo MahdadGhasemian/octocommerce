@@ -2,24 +2,46 @@
 
 ## How to run localy
 
+### Clone and Install dependencies
+
 ```bash
 git clone git@github.com:MahdadGhasemian/octocommerce.git
 cd ./octocommerce
 chmod +x ./install-dependencies.sh
 ./install-dependencies.sh
+```
+
+### Run Backend
+
+```bash
 docker-compose up # --build
+```
+
+### Run Frontend (Admin Panel)
+
+```bash
+cd ./octocommerce/frontend/panel
+pnpm run dev
+```
+
+### Run Frontend (Store Websote)
+
+```bash
+cd ./octocommerce/frontend/website
+pnpm run dev
 ```
 
 ### Web UI Tools
 
-- [Panel](http://localhost:4058/panel/)
+- [Admin Panel](http://localhost:3000/)
+- [Store](http://localhost:3001/)
 
-- [Auth Doc](http://localhost:4058/auth/docs#)
-- [Bot Doc](http://localhost:4058/bot/docs#)
-- [File Doc](http://localhost:4058/file/docs#)
-- [Notification Doc](http://localhost:4058/notification/docs#)
-- [Storage Doc](http://localhost:4058/storage/docs#)
-- [Store Doc](http://localhost:4058/store/docs#)
+- [Auth Doc](http://localhost:4000/auth/docs#)
+- [Bot Doc](http://localhost:4000/bot/docs#)
+- [File Doc](http://localhost:4000/file/docs#)
+- [Notification Doc](http://localhost:4000/notification/docs#)
+- [Storage Doc](http://localhost:4000/storage/docs#)
+- [Store Doc](http://localhost:4000/store/docs#)
 
 - [PgAdmin](http://localhost:8088/)
 - [Rabbitmq UI](http://localhost:15678/)
