@@ -12,6 +12,8 @@ docker-compose up # --build
 
 ### Web UI Tools
 
+- [Panel](http://localhost:4058/panel/)
+
 - [Auth Doc](http://localhost:4058/auth/docs#)
 - [Bot Doc](http://localhost:4058/bot/docs#)
 - [File Doc](http://localhost:4058/file/docs#)
