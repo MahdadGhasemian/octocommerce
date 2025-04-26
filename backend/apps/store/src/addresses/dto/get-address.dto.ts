@@ -1,21 +1,32 @@
+import { GetUserDto } from '@app/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { Expose, Type } from 'class-transformer';
+import {
+  IsMobilePhone,
+  IsNumber,
+  IsOptional,
+  IsPhoneNumber,
+  IsString,
+} from 'class-validator';
 
-export class CreateContactDto {
+export class GetAddressDto {
+  @ApiProperty({
+    example: '1',
+    required: true,
+  })
+  @IsNumber()
+  @IsOptional()
+  @Expose()
+  id?: number;
+
   @ApiProperty({
     example: 'Mahdad Info',
     required: false,
   })
   @IsString()
   @IsOptional()
-  title: string;
-
-  @ApiProperty({
-    example: 'Mahdad Ghasemian',
-    required: true,
-  })
-  @IsString()
-  name: string;
+  @Expose()
+  title?: string;
 
   @ApiProperty({
     example: '021-12345678',
@@ -23,6 +34,8 @@ export class CreateContactDto {
   })
   @IsString()
   @IsOptional()
+  @IsPhoneNumber()
+  @Expose()
   phone?: string;
 
   @ApiProperty({
@@ -31,6 +44,8 @@ export class CreateContactDto {
   })
   @IsString()
   @IsOptional()
+  @IsMobilePhone()
+  @Expose()
   mobile_phone?: string;
 
   @ApiProperty({
@@ -38,6 +53,7 @@ export class CreateContactDto {
   })
   @IsString()
   @IsOptional()
+  @Expose()
   address?: string;
 
   @ApiProperty({
@@ -45,6 +61,7 @@ export class CreateContactDto {
   })
   @IsString()
   @IsOptional()
+  @Expose()
   city?: string;
 
   @ApiProperty({
@@ -52,6 +69,7 @@ export class CreateContactDto {
   })
   @IsString()
   @IsOptional()
+  @Expose()
   postal_code?: string;
 
   @ApiProperty({
@@ -59,6 +77,7 @@ export class CreateContactDto {
   })
   @IsString()
   @IsOptional()
+  @Expose()
   national_code?: string;
 
   @ApiProperty({
@@ -66,6 +85,7 @@ export class CreateContactDto {
   })
   @IsString()
   @IsOptional()
+  @Expose()
   economic_code?: string;
 
   @ApiProperty({
@@ -73,6 +93,7 @@ export class CreateContactDto {
   })
   @IsNumber()
   @IsOptional()
+  @Expose()
   latitude?: number;
 
   @ApiProperty({
@@ -80,5 +101,14 @@ export class CreateContactDto {
   })
   @IsNumber()
   @IsOptional()
+  @Expose()
   longitude?: number;
+
+  @ApiProperty({
+    type: GetUserDto,
+    required: false,
+  })
+  @Type(() => GetUserDto)
+  @Expose()
+  user?: GetUserDto;
 }

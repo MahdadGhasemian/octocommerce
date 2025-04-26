@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ContactsController } from './contacts.controller';
-import { ContactsService } from './contacts.service';
+import { AddressesController } from './addresses.controller';
+import { AddressesService } from './addresses.service';
 import { DatabaseModule, HealthModule, LoggerModule } from '@app/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
-import { ContactsRepository } from './contacts.repository';
+import { AddressesRepository } from './addresses.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Contact, User } from '@app/store';
+import { Address, User } from '@app/store';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { Contact, User } from '@app/store';
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([User, Contact]),
+    TypeOrmModule.forFeature([User, Address]),
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
@@ -27,8 +27,8 @@ import { Contact, User } from '@app/store';
     }),
     HealthModule,
   ],
-  controllers: [ContactsController],
-  providers: [ContactsService, ContactsRepository],
-  exports: [ContactsService],
+  controllers: [AddressesController],
+  providers: [AddressesService, AddressesRepository],
+  exports: [AddressesService],
 })
-export class ContactsModule {}
+export class AddressesModule {}

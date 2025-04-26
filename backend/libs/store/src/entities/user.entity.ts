@@ -5,12 +5,19 @@ import { AbstractEntity } from '../../../common/src/database/abstract.entity';
 import { Review } from './review.entity';
 import { Question } from './question.entity';
 import { Answer } from './answer.entity';
-import { Contact } from './contact.entity';
+import { Address } from './address.entity';
 import { ShortMessage } from './short-message.entity';
-import { Gender } from '../../../common/src/enum/enums';
+import { Gender, UserType } from '../../../common/src/enum/enums';
 
 @Entity()
 export class User extends AbstractEntity<User> {
+  @Column({
+    type: 'enum',
+    enum: UserType,
+    default: UserType.INDIVIDUAL,
+  })
+  user_type: UserType;
+
   @Column({ nullable: true })
   mobile_phone: string;
 
@@ -59,8 +66,8 @@ export class User extends AbstractEntity<User> {
   @OneToMany(() => Answer, (answer) => answer.user)
   answers: Answer[];
 
-  @OneToMany(() => Contact, (contact) => contact.user)
-  contacts: Contact[];
+  @OneToMany(() => Address, (address) => address.user)
+  addresses: Address[];
 
   @OneToMany(() => ShortMessage, (sortMessage) => sortMessage.user)
   short_messages: ShortMessage[];

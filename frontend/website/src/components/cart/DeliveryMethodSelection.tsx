@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   selectCart,
-  selectDeliveryContact,
+  selectDeliveryAddress,
   selectDeliveryCost,
   selectDeliveryMethod,
   selectDeliveryMethodAreaRule,
@@ -43,7 +43,7 @@ const DeliveryMethodSelection = () => {
   const dispatch = useDispatch();
   const { setting } = useSelector(selectCart);
   const deliveryCost = useSelector(selectDeliveryCost);
-  const deliveryContact = useSelector(selectDeliveryContact);
+  const deliveryAddress = useSelector(selectDeliveryAddress);
   const deliveryMethod = useSelector(selectDeliveryMethod);
   const deliveryMethodAreaRule = useSelector(selectDeliveryMethodAreaRule);
 
@@ -89,7 +89,7 @@ const DeliveryMethodSelection = () => {
       return false;
     }
 
-    if (!deliveryContact?.latitude || !deliveryContact?.longitude) {
+    if (!deliveryAddress?.latitude || !deliveryAddress?.longitude) {
       return false;
     }
 
@@ -116,8 +116,8 @@ const DeliveryMethodSelection = () => {
           longitude: setting?.delivery_center_longitude,
         },
         {
-          latitude: deliveryContact?.latitude,
-          longitude: deliveryContact?.longitude,
+          latitude: deliveryAddress?.latitude,
+          longitude: deliveryAddress?.longitude,
         },
       ])} تومان`;
     } else {

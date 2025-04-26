@@ -16,7 +16,7 @@ import counterReducer, { CounterState } from './slices/counterSlice'
 import mahdadReducer, { MahdadState } from './slices/mahdadSlice'
 import cardReducer, { CartState } from './slices/cartSlice'
 import settingReducer, { SettingState } from './slices/settingSlice'
-import contactReducer, { ContactState } from './slices/contactSlice'
+import addressReducer, { AddressState } from './slices/addressSlice'
 import messageReducer, { MessageState } from './slices/messageSlice'
 import productReducer, { ProductState } from './slices/productSlice'
 
@@ -28,7 +28,7 @@ const rootReducer: Reducer<
     mahdad: MahdadState
     cart: CartState
     setting: SettingState
-    contact: ContactState
+    address: AddressState
     message: MessageState
     product: ProductState
   }>,
@@ -40,7 +40,7 @@ const rootReducer: Reducer<
   mahdad: mahdadReducer,
   cart: cardReducer,
   setting: settingReducer,
-  contact: contactReducer,
+  address: addressReducer,
   message: messageReducer,
   product: productReducer
 })

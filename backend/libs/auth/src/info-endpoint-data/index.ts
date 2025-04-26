@@ -90,8 +90,8 @@ export const InfoEndpointData: AccessInfoEndpoint[] = [
     delete: false,
   },
   {
-    key: 'contacts',
-    tag: 'مخاطب ها',
+    key: 'addresses',
+    tag: 'آدرس ها',
     get: false,
     post: false,
     patch: false,
@@ -218,11 +218,11 @@ export const EndpointData = [
     delete: ['/products/{id}'],
   },
   {
-    key: 'contacts',
-    get: ['/contacts', '/contacts/{id}'],
-    post: ['/contacts'],
-    patch: ['/contacts/{id}'],
-    delete: ['/contacts/{id}'],
+    key: 'addresses',
+    get: ['/addresses', '/addresses/{id}'],
+    post: ['/addresses'],
+    patch: ['/addresses/{id}'],
+    delete: ['/addresses/{id}'],
   },
   {
     key: 'orders',

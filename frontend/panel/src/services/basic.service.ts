@@ -287,10 +287,10 @@ export type Order = {
   created_at: Date
   updated_at: Date
   user: User
-  contact_id: number
-  contact: Contact
-  billing_contact_id: number
-  billing_contact: Contact
+  address_id: number
+  address: Address
+  billing_address_id: number
+  billing_address: Address
   order_items: Array<OrderItem>
   subtotal: number
   packaging_cost: number
@@ -321,12 +321,11 @@ export type AddOrder = {
   note?: string
 }
 
-export type Contact = {
+export type Address = {
   id: number
   account_id: number
   user: User
   title: string
-  name: string
   phone: string
   mobile_phone: string
   address: string
@@ -687,7 +686,7 @@ class BasicService {
     })
   }
 
-  editBillingContactOrder(id: number, order: Partial<Order>): Promise<Order> {
+  editBillingAddressOrder(id: number, order: Partial<Order>): Promise<Order> {
     return api.patch(`/store/orders/${id}/billing`, order).then(response => {
       return response?.data
     })
@@ -761,18 +760,18 @@ class BasicService {
     })
   }
 
-  // Contact
-  getAllContact(
+  // Address
+  getAllAddress(
     limit?: number,
     page?: number,
     search?: string,
     columnFilters?: InputColumnFiltersModel[],
     sorting?: InputSortingModel[]
-  ): Promise<ApiListResponse<Contact>> {
+  ): Promise<ApiListResponse<Address>> {
     const params = createParams(limit, page, search, columnFilters, sorting)
 
     return api
-      .get('/store/contacts', {
+      .get('/store/addresses', {
         params
       })
       .then(response => {
@@ -780,32 +779,32 @@ class BasicService {
       })
   }
 
-  createContact(contact: Partial<Contact>): Promise<Contact> {
-    return api.post('/store/contacts', contact).then(response => {
+  createAddress(address: Partial<Address>): Promise<Address> {
+    return api.post('/store/addresses', address).then(response => {
       return response?.data
     })
   }
 
-  getContact(id: number): Promise<Contact> {
-    return api.get(`/store/contacts/${id}`).then(response => {
+  getAddress(id: number): Promise<Address> {
+    return api.get(`/store/addresses/${id}`).then(response => {
       return response?.data
     })
   }
 
-  editContact(id: number, contact: Partial<Contact>): Promise<Contact> {
-    return api.patch(`/store/contacts/${id}`, contact).then(response => {
+  editAddress(id: number, address: Partial<Address>): Promise<Address> {
+    return api.patch(`/store/addresses/${id}`, address).then(response => {
       return response?.data
     })
   }
 
-  deleteContact(id: number): Promise<unknown> {
-    return api.delete(`/store/contacts/${id}`).then(response => {
+  deleteAddress(id: number): Promise<unknown> {
+    return api.delete(`/store/addresses/${id}`).then(response => {
       return response?.data
     })
   }
 
-  createContactForOtherUser(contact: Partial<Contact & { user_id: number }>): Promise<Contact> {
-    return api.post('/store/contacts/other/user', contact).then(response => {
+  createAddressForOtherUser(address: Partial<Address & { user_id: number }>): Promise<Address> {
+    return api.post('/store/addresses/other/user', address).then(response => {
       return response?.data
     })
   }

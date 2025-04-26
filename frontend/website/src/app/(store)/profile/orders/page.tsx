@@ -72,7 +72,7 @@ const paymentInfo = {
   shebaNumberToCopy: 'IR123450000001234567890',
 };
 
-const supportContact = {
+const supportInfo = {
   phoneNumber: '02112345678',
   mobilePhoneSale1: '09129632744',
   mobilePhoneSale2: '09129632744',
@@ -202,37 +202,37 @@ export default function Page() {
         </div>
         {/* Support Info */}
         <div className='flex flex-col sm:flex-row flex-wrap gap-2 border-b px-4 pb-4 items-start sm:items-center justify-start w-full'>
-          <CopyToClipboard textToCopy={supportContact.email} defaultResultText='آدرس ایمیل کپی شد!'>
+          <CopyToClipboard textToCopy={supportInfo.email} defaultResultText='آدرس ایمیل کپی شد!'>
             <div className='flex flex-row gap-2 justify-center items-center text-nowrap'>
               <span className='text-sm text-neutral-400'>ایمیل:</span>
-              {supportContact.email}
+              {supportInfo.email}
             </div>
           </CopyToClipboard>
-          <CopyToClipboard textToCopy={supportContact.phoneNumber} defaultResultText='شماره تلفن کپی شد!'>
+          <CopyToClipboard textToCopy={supportInfo.phoneNumber} defaultResultText='شماره تلفن کپی شد!'>
             <div className='flex flex-row gap-2 justify-center items-center text-nowrap'>
               <span className='text-sm text-neutral-400'>تلفن پشتیبانی:</span>
-              {supportContact.phoneNumber}
+              {supportInfo.phoneNumber}
             </div>
           </CopyToClipboard>
 
           <CopyToClipboard
-            textToCopy={supportContact.mobilePhoneSale1.replaceAll(' ', '')}
+            textToCopy={supportInfo.mobilePhoneSale1.replaceAll(' ', '')}
             defaultResultText='شماره موبایل کپی شد!'
           >
             <div className='flex flex-row gap-2 justify-center items-center text-nowrap'>
               <span className='text-sm text-neutral-400'>شماره موبایل پشتیبانی :</span>
-              <span dir='ltr'>{supportContact.mobilePhoneSale1}</span>
+              <span dir='ltr'>{supportInfo.mobilePhoneSale1}</span>
             </div>
           </CopyToClipboard>
 
           <div className='flex flex-row gap-2 justify-center items-center text-nowrap'>
-            <a href={`https://wa.me/${supportContact.whatsappPhone}`} target='_blank' rel='noopener noreferrer'>
+            <a href={`https://wa.me/${supportInfo.whatsappPhone}`} target='_blank' rel='noopener noreferrer'>
               <WhatsappLogo className='w-12 h-12 cursor-pointer' />
             </a>
-            <a href={`https://t.me/${supportContact.telegramUsername}`} target='_blank' rel='noopener noreferrer'>
+            <a href={`https://t.me/${supportInfo.telegramUsername}`} target='_blank' rel='noopener noreferrer'>
               <TelegramLogo className='w-12 h-12 cursor-pointer' />
             </a>
-            <a href={`https://ble.ir/${supportContact.baleUsernmae}`} target='_blank' rel='noopener noreferrer'>
+            <a href={`https://ble.ir/${supportInfo.baleUsernmae}`} target='_blank' rel='noopener noreferrer'>
               <BaleLogo className='w-9 h-9 cursor-pointer' />
             </a>
           </div>

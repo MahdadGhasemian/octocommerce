@@ -32,7 +32,7 @@ export default function Page() {
 
   // ** Store
   const dispatch = useDispatch();
-  const { items, subtotal, total, isEmpty, deliveryContact, billingContact } = useSelector(selectCart);
+  const { items, subtotal, total, isEmpty, deliveryAddress, billingAddress } = useSelector(selectCart);
   const taxAmount = useSelector(selectTaxAmount);
   const roundAmount = useSelector(selectRoundAmount);
   const packagingCost = useSelector(selectPackagingCost);
@@ -62,8 +62,8 @@ export default function Page() {
       return;
     }
 
-    // Ensure the delivery contact is selected
-    if (!deliveryContact || !deliveryContact.id) {
+    // Ensure the delivery address is selected
+    if (!deliveryAddress || !deliveryAddress.id) {
       setMessage('آدرس حمل را انتخاب کنید');
       return;
     }
@@ -89,8 +89,8 @@ export default function Page() {
           deliveryMethod.delivery_pricing_type === DeliveryPricingType.SELECTED_AREA
             ? deliveryMethodAreaRule?.area_name
             : undefined,
-        contact_id: deliveryContact.id,
-        billing_contact_id: billingContact?.id,
+        delivery_address_id: deliveryAddress.id,
+        billing_address_id: billingAddress?.id,
 
         order_items: items
           .filter(item => item.id && item.quantity)

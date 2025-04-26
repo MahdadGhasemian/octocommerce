@@ -20,7 +20,7 @@ import { RedisClientOptions } from 'redis';
 import { redisStore } from 'cache-manager-redis-yet';
 import { APP_INTERCEPTOR, Reflector } from '@nestjs/core';
 import { SettingsModule } from './settings/settings.module';
-import { ContactsModule } from './contacts/contacts.module';
+import { AddressesModule } from './addresses/addresses.module';
 import { UsersModule } from './users/users.module';
 import { AnalyticsModule } from './analytic/analytics.module';
 import { ReviewsModule } from './reviews/reviews.module';
@@ -64,7 +64,7 @@ import { DeliveryMethodsModule } from './delivery-methods/delivery-methods.modul
     HealthModule,
     SettingsModule,
     UsersModule,
-    ContactsModule,
+    AddressesModule,
     CategoriesModule,
     ProductsModule,
     OrdersModule,

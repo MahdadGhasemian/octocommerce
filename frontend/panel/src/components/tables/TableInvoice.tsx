@@ -203,10 +203,10 @@ const TableInvoice = () => {
         }
       },
       {
-        accessorKey: 'contact',
+        accessorKey: 'address',
         header: 'آدرس حمل',
         accessorFn: row => `${row?.user?.last_name || ''}`,
-        id: 'contact',
+        id: 'address',
         size: 240,
         exportData: {
           width: 25,

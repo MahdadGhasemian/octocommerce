@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersController } from './users.controller';
 import { User } from '@app/store';
-import { ContactsModule } from '../contacts/contacts.module';
+import { AddressesModule } from '../addresses/addresses.module';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { ContactsModule } from '../contacts/contacts.module';
       inject: [ConfigService],
     }),
     TypeOrmModule.forFeature([User]),
-    ContactsModule,
+    AddressesModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, UsersRepository],

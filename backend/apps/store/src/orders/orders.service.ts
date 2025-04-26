@@ -38,7 +38,7 @@ import { UpdateIsPaidOrderDto } from './dto/update-paid-orders.dto';
 import { SettingsService } from '../settings/settings.service';
 import { PaginateQuery, paginate } from 'nestjs-paginate';
 import { ORDER_PAGINATION_CONFIG } from './pagination-config';
-import { ContactsService } from '../contacts/contacts.service';
+import { AddressesService } from '../addresses/addresses.service';
 import { ConfigService } from '@nestjs/config';
 import { RejectOrderDto } from './dto/reject-order.dto';
 import { CreateOrderItemDto } from './dto/create-order-item.dto';
@@ -47,8 +47,8 @@ import { CreateOrderDeliveryDto } from './dto/delivery/create-order-delivery.dto
 import { UpdateOrderDeliveryDto } from './dto/delivery/update-order-delivery.dto';
 import { RejectOrderDeliveryDto } from './dto/delivery/reject-order-delivery.dto';
 import {
-  Contact,
-  ContactData,
+  Address,
+  AddressData,
   Delivery,
   DeliveryMethod,
   DeliveryMethodAreaRule,
@@ -70,7 +70,7 @@ export class OrdersService {
     private readonly orderItemsRepository: OrderItemsRepository,
     private readonly productsService: ProductsService,
     private readonly settingsService: SettingsService,
-    private readonly contactsService: ContactsService,
+    private readonly addressesService: AddressesService,
     private readonly deliveryMethodsService: DeliveryMethodsService,
     @Inject(NOTIFICATION_SERVICE)
     private readonly notficationClient: ClientProxy,
@@ -96,24 +96,24 @@ export class OrdersService {
       const {
         delivery_method_id,
         delivery_method_area_rule_area_name,
-        contact_id,
-        billing_contact_id,
+        delivery_address_id,
+        billing_address_id,
         order_items: order_items_input,
         discount_percentage,
         note,
       } = createOrderDto;
 
-      // Read Contact
-      const contact_data = await this.contactsService.findOne(
-        { id: contact_id },
+      // Read Address
+      const delivery_address = await this.addressesService.findOne(
+        { id: delivery_address_id },
         { user_id },
       );
 
-      // Read Billing Contact
-      let billing_contact_data;
-      if (billing_contact_id) {
-        billing_contact_data = await this.contactsService.findOneNoCheck(
-          { id: billing_contact_id },
+      // Read Billing Address
+      let billing_address;
+      if (billing_address_id) {
+        billing_address = await this.addressesService.findOneNoCheck(
+          { id: billing_address_id },
           { user_id },
         );
       }
@@ -165,17 +165,10 @@ export class OrdersService {
       order.subtotal = subtotal;
       order.order_items = order_items;
 
-      order.contact = new Contact({
-        id: contact_data.id,
-      });
-      order.contact_snapshot = this.mapContactToSnapshot(contact_data);
+      order.delivery_address = delivery_address;
 
-      if (billing_contact_data) {
-        order.billing_contact = new Contact({
-          id: billing_contact_data.id,
-        });
-        order.billing_contact_snapshot =
-          this.mapContactToSnapshot(billing_contact_data);
+      if (billing_address) {
+        order.billing_address = billing_address;
       }
 
       // delivery
@@ -183,15 +176,14 @@ export class OrdersService {
         delivery_method: new DeliveryMethod({ id: delivery_method.id }),
         delivery_method_area_rule_area_name,
         delivery_type: delivery_method.delivery_type,
-        delivery_address: contact_data.address,
-        delivery_city: contact_data.city,
-        delivery_postal_code: contact_data.postal_code,
-        delivery_latitude: contact_data.latitude,
-        delivery_longitude: contact_data.longitude,
-        recipient_name: contact_data.name,
-        recipient_national_id: contact_data.national_code,
-        recipient_phone_number: contact_data.phone,
-        recipient_mobile_phone_number: contact_data.mobile_phone,
+        delivery_address: delivery_address.address,
+        delivery_city: delivery_address.city,
+        delivery_postal_code: delivery_address.postal_code,
+        delivery_latitude: delivery_address.latitude,
+        delivery_longitude: delivery_address.longitude,
+        recipient_national_id: delivery_address.national_code,
+        recipient_phone_number: delivery_address.phone,
+        recipient_mobile_phone_number: delivery_address.mobile_phone,
         delivery_status: DeliveryStatus.CONFIRMED,
 
         user: new User({ id: user_id }),
@@ -226,8 +218,8 @@ export class OrdersService {
         ),
         setting.delivery_center_latitude,
         setting.delivery_center_longitude,
-        contact_data.latitude,
-        contact_data.longitude,
+        delivery_address.latitude,
+        delivery_address.longitude,
       );
 
       // packaging cost
@@ -309,8 +301,8 @@ export class OrdersService {
             category: true,
           },
         },
-        contact: true,
-        billing_contact: true,
+        delivery_address: true,
+        billing_address: true,
         confirmed_rejected_by: true,
         payments: true,
         delivery: {
@@ -375,7 +367,7 @@ export class OrdersService {
         delivery: {
           delivery_method: true,
         },
-        contact: true,
+        delivery_address: true,
       },
     );
 
@@ -419,8 +411,8 @@ export class OrdersService {
           areaRules,
           setting.delivery_center_latitude,
           setting.delivery_center_longitude,
-          order.contact.latitude,
-          order.contact.longitude,
+          order.delivery_address.latitude,
+          order.delivery_address.longitude,
         );
 
       // discount
@@ -837,8 +829,8 @@ export class OrdersService {
     deliveryMethodAreaRule?: DeliveryMethodAreaRule,
     delivery_center_latitude?: number,
     delivery_center_longitude?: number,
-    delivery_contact_latitude?: number,
-    delivery_contact_longitude?: number,
+    delivery_address_latitude?: number,
+    delivery_address_longitude?: number,
   ): {
     discount_amount: number;
     tax_amount: number;
@@ -866,8 +858,8 @@ export class OrdersService {
       deliveryMethodAreaRule,
       delivery_center_latitude,
       delivery_center_longitude,
-      delivery_contact_latitude,
-      delivery_contact_longitude,
+      delivery_address_latitude,
+      delivery_address_longitude,
     );
 
     // discount amount
@@ -932,8 +924,8 @@ export class OrdersService {
     deliveryMethodAreaRule?: DeliveryMethodAreaRule,
     delivery_center_latitude?: number,
     delivery_center_longitude?: number,
-    delivery_contact_latitude?: number,
-    delivery_contact_longitude?: number,
+    delivery_address_latitude?: number,
+    delivery_address_longitude?: number,
   ) => {
     let delivery_cost = 0;
 
@@ -956,8 +948,8 @@ export class OrdersService {
             longitude: delivery_center_longitude,
           },
           {
-            latitude: delivery_contact_latitude,
-            longitude: delivery_contact_longitude,
+            latitude: delivery_address_latitude,
+            longitude: delivery_address_longitude,
           },
         ],
       );
@@ -1003,20 +995,18 @@ export class OrdersService {
     return `${order_invoice_number}-${randomNumber}`;
   };
 
-  private mapContactToSnapshot(contact: Contact): ContactData {
+  private mapAddress(address: Address): AddressData {
     return {
-      contact_type: contact.contact_type,
-      title: contact.title,
-      name: contact.name,
-      phone: contact.phone,
-      mobile_phone: contact.mobile_phone,
-      address: contact.address,
-      city: contact.city,
-      postal_code: contact.postal_code,
-      national_code: contact.national_code,
-      economic_code: contact.economic_code,
-      latitude: contact.latitude,
-      longitude: contact.longitude,
+      title: address.title,
+      phone: address.phone,
+      mobile_phone: address.mobile_phone,
+      address: address.address,
+      city: address.city,
+      postal_code: address.postal_code,
+      national_code: address.national_code,
+      economic_code: address.economic_code,
+      latitude: address.latitude,
+      longitude: address.longitude,
     };
   }
 }

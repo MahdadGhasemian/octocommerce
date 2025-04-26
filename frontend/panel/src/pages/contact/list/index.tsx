@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 
 // ** Components Imports
-import TableContact from '@/components/tables/TableContact'
+import TableAddress from '@/components/tables/TableAddress'
 
 const Invoice = () => {
   // ** Hook
@@ -12,7 +12,7 @@ const Invoice = () => {
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Card>
-          <TableContact />
+          <TableAddress />
         </Card>
       </Grid>
     </Grid>

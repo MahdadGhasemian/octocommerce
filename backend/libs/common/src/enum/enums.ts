@@ -5,6 +5,11 @@ export enum Gender {
   BOTH = 'both',
 }
 
+export enum UserType {
+  INDIVIDUAL = 'individual',
+  ENTERPRISE = 'enterprise',
+}
+
 export enum OrderStatus {
   PENDING = 'pending',
   CONFIRMED = 'confirmed',
@@ -157,9 +162,4 @@ export enum SmsTitleType {
   CODE_INTERNAL_1 = 'code_internal_1',
   CODE_INTERNAL_2 = 'code_internal_2',
   CODE_INTERNAL_3 = 'code_internal_3',
-}
-
-export enum ContactType {
-  INDIVIDUAL = 'individual',
-  ENTERPRISE = 'enterprise',
 }

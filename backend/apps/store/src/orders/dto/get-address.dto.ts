@@ -1,6 +1,5 @@
-import { GetUserDto } from '@app/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose, Type } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import {
   IsMobilePhone,
   IsNumber,
@@ -9,7 +8,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export class GetContactDto {
+export class GetAddressDto {
   @ApiProperty({
     example: '1',
     required: true,
@@ -27,14 +26,6 @@ export class GetContactDto {
   @IsOptional()
   @Expose()
   title?: string;
-
-  @ApiProperty({
-    example: 'Mahdad Ghasemian',
-    required: true,
-  })
-  @IsString()
-  @Expose()
-  name?: string;
 
   @ApiProperty({
     example: '021-12345678',
@@ -62,7 +53,7 @@ export class GetContactDto {
   @IsString()
   @IsOptional()
   @Expose()
-  address?: string;
+  delivery_address?: string;
 
   @ApiProperty({
     required: false,
@@ -111,12 +102,4 @@ export class GetContactDto {
   @IsOptional()
   @Expose()
   longitude?: number;
-
-  @ApiProperty({
-    type: GetUserDto,
-    required: false,
-  })
-  @Type(() => GetUserDto)
-  @Expose()
-  user?: GetUserDto;
 }

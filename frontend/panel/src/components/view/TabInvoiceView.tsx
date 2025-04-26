@@ -264,18 +264,13 @@ const TabInvoiceView = (props: Props) => {
               />
             </Grid>
             <Grid item xs={12} md={3}>
-              <TextField
-                fullWidth
-                label='آدرس حمل'
-                value={order.contact?.title || order.contact?.name}
-                InputProps={{ readOnly: true }}
-              />
+              <TextField fullWidth label='آدرس حمل' value={order.address?.title} InputProps={{ readOnly: true }} />
             </Grid>
             <Grid item xs={12} md={3}>
               <TextField
                 fullWidth
                 label='آدرس صورتحساب'
-                value={order.billing_contact?.title || order.billing_contact?.name}
+                value={order.billing_address?.title}
                 InputProps={{ readOnly: true }}
               />
             </Grid>
