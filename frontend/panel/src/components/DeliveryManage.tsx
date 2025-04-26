@@ -2,23 +2,17 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 
 // ** MUI Imports
-import { Radio, Button, CardContent, Grid, RadioGroup, TextField, Card } from '@mui/material'
+import { Radio, CardContent, Grid, RadioGroup, TextField, Card } from '@mui/material'
 import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
 
 // ** MUI Imports
 import { styled } from '@mui/material/styles'
 
 // ** Services Import
-import BasicService, { Delivery, DeliveryStatus, DeliveryType, Order } from '@/services/basic.service'
-
-// ** Redux Imports
-import { store } from '@/redux/store'
-import { PaymentStatus } from '@/services/basic.service'
-import { toastInfo, toastSuccess } from '@/redux/slices/snackbarSlice'
+import { Delivery, DeliveryType, Order } from '@/services/basic.service'
 
 // ** Import Component
 import Empty from '@/components/Empty'
-import SetStatus from '@/components/SetStatus'
 
 // ** Map Types Imports
 import { DeliveryTypeMap } from '@/map-types'
@@ -40,11 +34,6 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
 
 const deliveryTypeValues = Object.values(DeliveryType)
 
-type DeliveryError<T> = {
-  [K in keyof T]: boolean
-}
-type DeliveryErrorType = DeliveryError<Delivery>
-
 export type Props = {
   order: Order
   isSmallScreen: boolean
@@ -56,16 +45,10 @@ const DeliveryManage = (props: Props) => {
 
   // ** State
   const [delivery, setDelivery] = useState<Partial<Delivery>>()
-  const [deliveryError, setDeliveryError] = useState<Partial<DeliveryErrorType>>()
-  const [rejectedNote, setRejectNote] = useState<string>()
 
   // ** Vars
   const thereIsDeliveryData: boolean = delivery?.id ? true : false
-  const deliveryIsPending = delivery?.delivery_status === DeliveryStatus.Pending
-  const deliveryIsRejected = delivery?.delivery_status === DeliveryStatus.Rejected
   const readOnly = true
-
-  const { dispatch } = store
 
   const deliveryTypeRadioGroup = deliveryTypeValues.map(value => (
     <FormControlLabel
@@ -78,96 +61,6 @@ const DeliveryManage = (props: Props) => {
 
   const handleChange = (prop: keyof Delivery) => (event: ChangeEvent<HTMLInputElement>) => {
     setDelivery({ ...delivery, [prop]: event.target.value })
-  }
-
-  const handleConfirmOrRejectDelivery = async (status: DeliveryStatus.Confirmed | PaymentStatus.Rejected) => {
-    try {
-      if (order?.id && deliveryIsPending) {
-        if (status === DeliveryStatus.Confirmed) {
-          const delivery_result = await BasicService.confirmDelivery(order.id, Number(delivery?.id))
-          setDelivery(delivery_result)
-          dispatch(toastSuccess('مشخصات حمل و نقل با موفقیت تایید گردید.'))
-        } else {
-          const delivery_result = await BasicService.rejectDelivery(order.id, Number(delivery?.id), rejectedNote)
-          setDelivery(delivery_result)
-          dispatch(toastSuccess('مشخصات حمل و نقل رد شد.'))
-        }
-      }
-    } catch (error) {}
-  }
-
-  const checkFormErrors = (): boolean => {
-    if (delivery?.delivery_type === DeliveryType.RIDER) {
-      setDeliveryError({
-        ...deliveryError,
-        delivery_address: !delivery.delivery_address,
-        delivery_postal_code: !delivery.delivery_postal_code,
-        recipient_name: !delivery.recipient_name,
-        recipient_national_id: !delivery.recipient_national_id,
-        recipient_phone_number: !delivery.recipient_phone_number,
-        recipient_mobile_phone_number: !delivery.recipient_mobile_phone_number
-      })
-
-      if (
-        !delivery.delivery_address ||
-        !delivery.delivery_postal_code ||
-        !delivery.recipient_name ||
-        !delivery.recipient_national_id ||
-        !delivery.recipient_phone_number ||
-        !delivery.recipient_mobile_phone_number
-      )
-        return true
-    } else if (delivery?.delivery_type === DeliveryType.SELF_PICKUP) {
-      setDeliveryError({
-        ...deliveryError,
-        recipient_name: !delivery.recipient_name,
-        recipient_national_id: !delivery.recipient_national_id,
-        recipient_mobile_phone_number: !delivery.recipient_mobile_phone_number,
-        car_license_plate: !delivery?.car_license_plate
-      })
-
-      if (
-        !delivery.recipient_name ||
-        !delivery.recipient_national_id ||
-        !delivery.recipient_mobile_phone_number ||
-        !delivery.car_license_plate
-      )
-        return true
-    }
-
-    return false
-  }
-
-  const handleSave = async () => {
-    const error = checkFormErrors()
-
-    if (error) return
-
-    if (!delivery) return
-
-    try {
-      const delivery_result = await BasicService.createDelivery(order.id, delivery as Delivery)
-
-      setDelivery(delivery_result)
-
-      dispatch(toastInfo('مشخصات حمل و نقل با موفقیت ذخیره شد.'))
-    } catch (error) {}
-  }
-
-  const handleEdit = async () => {
-    const error = checkFormErrors()
-
-    if (error) return
-
-    if (!delivery) return
-
-    try {
-      const delivery_result = await BasicService.editDelivery(order.id, Number(delivery?.id), delivery as Delivery)
-
-      setDelivery(delivery_result)
-
-      dispatch(toastInfo('مشخصات حمل و نقل با موفقیت ذخیره شد.'))
-    } catch (error) {}
   }
 
   useEffect(() => {
@@ -203,8 +96,6 @@ const DeliveryManage = (props: Props) => {
                     label='نشانی تحویل'
                     value={delivery.delivery_address}
                     onChange={handleChange('delivery_address')}
-                    error={deliveryError?.delivery_address}
-                    helperText={deliveryError?.delivery_address && 'این آیتم ضروری می باشد.'}
                     InputProps={{
                       readOnly: readOnly
                     }}
@@ -217,8 +108,6 @@ const DeliveryManage = (props: Props) => {
                     label='کد پستی'
                     value={delivery.delivery_postal_code}
                     onChange={handleChange('delivery_postal_code')}
-                    error={deliveryError?.delivery_postal_code}
-                    helperText={deliveryError?.delivery_postal_code && 'این آیتم ضروری می باشد.'}
                     InputProps={{
                       readOnly: readOnly
                     }}
@@ -231,8 +120,6 @@ const DeliveryManage = (props: Props) => {
                     label='نام تحویل گیرنده'
                     value={delivery?.recipient_name}
                     onChange={handleChange('recipient_name')}
-                    error={deliveryError?.recipient_name}
-                    helperText={deliveryError?.recipient_name && 'این آیتم ضروری می باشد.'}
                     InputProps={{
                       readOnly: readOnly
                     }}
@@ -245,8 +132,6 @@ const DeliveryManage = (props: Props) => {
                     label='کد ملی تحویل گیرنده'
                     value={delivery?.recipient_national_id}
                     onChange={handleChange('recipient_national_id')}
-                    error={deliveryError?.recipient_national_id}
-                    helperText={deliveryError?.recipient_national_id && 'این آیتم ضروری می باشد.'}
                     InputProps={{
                       readOnly: readOnly
                     }}
@@ -259,8 +144,6 @@ const DeliveryManage = (props: Props) => {
                     label='شماره موبایل تحویل گیرنده'
                     value={delivery?.recipient_mobile_phone_number}
                     onChange={handleChange('recipient_mobile_phone_number')}
-                    error={deliveryError?.recipient_mobile_phone_number}
-                    helperText={deliveryError?.recipient_mobile_phone_number && 'این آیتم ضروری می باشد.'}
                     InputProps={{
                       readOnly: readOnly
                     }}
@@ -273,8 +156,6 @@ const DeliveryManage = (props: Props) => {
                     label='شماره پلاک'
                     value={delivery?.car_license_plate}
                     onChange={handleChange('car_license_plate')}
-                    error={deliveryError?.car_license_plate}
-                    helperText={deliveryError?.car_license_plate && 'این آیتم ضروری می باشد.'}
                     InputProps={{
                       readOnly: readOnly
                     }}
@@ -287,8 +168,6 @@ const DeliveryManage = (props: Props) => {
                     label='شماره تلفن'
                     value={delivery.recipient_phone_number}
                     onChange={handleChange('recipient_phone_number')}
-                    error={deliveryError?.recipient_phone_number}
-                    helperText={deliveryError?.recipient_phone_number && 'این آیتم ضروری می باشد.'}
                     InputProps={{
                       readOnly: readOnly
                     }}

@@ -44,7 +44,6 @@ import { useConfirmation } from '@/context/confirmationContext'
 
 // ** Import libraries
 import moment from 'moment-jalaali'
-import Empty from '../Empty'
 import ExportButton from '../ExportButton'
 import { InputColumnFiltersModel } from '@/services/param'
 
@@ -66,7 +65,6 @@ const TableInvoice = () => {
   const [isRefetching, setIsRefetching] = useState(false)
   const [rowCount, setRowCount] = useState(0)
   const [refreshKey, setRefreshKey] = useState(0)
-  const [isEmptyData, setIsEmptyData] = useState(false)
 
   //table state
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([])
@@ -109,7 +107,6 @@ const TableInvoice = () => {
 
         setData(response.data)
         setRowCount(response.meta.totalItems)
-        setIsEmptyData(!response.data?.length && !columnFilters?.length && !globalFilter?.length)
       } catch (error) {
         setIsError(true)
       }
