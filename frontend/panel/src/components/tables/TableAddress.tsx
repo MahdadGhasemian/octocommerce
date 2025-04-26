@@ -427,7 +427,6 @@ export const CreateNewAccountModal = ({ open, columns, onClose, onSubmit }: Crea
         return acc
       }, {} as any)
   )
-  const [user, setUser] = useState<User | null>(null)
 
   const handleUserSelect = (user: User | null) => {
     setValues({ ...values, user })

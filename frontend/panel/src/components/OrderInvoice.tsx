@@ -28,9 +28,6 @@ import BasicService, { Address } from '@/services/basic.service'
 import { NumericFormat, NumericFormatProps } from 'react-number-format'
 import { User } from '@/services/auth.service'
 
-// ** Redux Imports
-import { useSelector } from 'react-redux'
-
 const ButtonStyled = styled(Button)<ButtonProps & { htmlFor?: string }>(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     width: '100%',
