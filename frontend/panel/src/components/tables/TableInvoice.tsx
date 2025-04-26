@@ -396,7 +396,7 @@ const TableInvoice = () => {
             onClick={onCreateNewInvoice}
             size={isSmallScreen ? 'small' : 'large'}
           >
-            {!isSmallScreen && <span>پیش فاکتور جدید</span>}
+            {!isSmallScreen && <span>ثبت سفارش جدید</span>}
             <Plus />
           </ButtonStyled>
         </Box>
