@@ -5,7 +5,7 @@ export * from './order.entity';
 export * from './order-item.entity';
 export * from './payment.entity';
 export * from './setting.entity';
-export * from './contact.entity';
+export * from './address.entity';
 export * from './delivery.entity';
 export * from './review.entity';
 export * from './question.entity';

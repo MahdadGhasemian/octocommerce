@@ -49,7 +49,7 @@ const headers = (
       },
       {
         title: 'آدرس ها',
-        path: '/contact/list'
+        path: '/address/list'
       },
       {
         title: 'سفارش ها',

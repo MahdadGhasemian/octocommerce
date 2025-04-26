@@ -4,50 +4,50 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  selectBillingContact,
-  selectDeliveryContact,
-  setBillingContact,
-  setDeliveryContact,
+  selectBillingAddress,
+  selectDeliveryAddress,
+  setBillingAddress,
+  setDeliveryAddress,
 } from '@/lib/store/features/cart/cartSlice';
 
 import Heading from '@/components/ui/heading';
-import ContactInfoManager from '@/components/users/ContactInfoManager';
-import ContactSelector from '@/components/users/ContactSelector';
+import AddressInfoManager from '@/components/users/AddressInfoManager';
+import AddressSelector from '@/components/users/AddressSelector';
 
-import basicService, { Contact } from '@/services/basic.service';
+import basicService, { Address } from '@/services/basic.service';
 
-export default function SelectContactInfo() {
+export default function SelectAddressInfo() {
   // ** Store
   const dispatch = useDispatch();
-  const deliveryContact = useSelector(selectDeliveryContact);
-  const billingContact = useSelector(selectBillingContact);
+  const deliveryAddress = useSelector(selectDeliveryAddress);
+  const billingAddress = useSelector(selectBillingAddress);
 
   // ** State
   const [isLoading, setIsLoading] = useState(false);
-  const [contacts, setContacts] = useState<Partial<Contact>[]>([]);
+  const [addresses, setAddresses] = useState<Partial<Address>[]>([]);
 
   // ** Functions
-  const handleSelectDeliveryContactId = (id: number) => {
-    const delivery = contacts.find(_ => _.id === id);
+  const handleSelectDeliveryAddressId = (id: number) => {
+    const delivery = addresses.find(_ => _.id === id);
 
-    if (delivery) dispatch(setDeliveryContact(delivery));
-    else dispatch(setDeliveryContact(null));
+    if (delivery) dispatch(setDeliveryAddress(delivery));
+    else dispatch(setDeliveryAddress(null));
   };
 
-  const handleSelectBillingContactId = (id: number) => {
-    const billingContact = contacts.find(_ => _.id === id);
-    if (billingContact) dispatch(setBillingContact(billingContact));
-    else dispatch(setBillingContact(null));
+  const handleSelectBillingAddressId = (id: number) => {
+    const billingAddress = addresses.find(_ => _.id === id);
+    if (billingAddress) dispatch(setBillingAddress(billingAddress));
+    else dispatch(setBillingAddress(null));
   };
 
   // Fetch when the component mounts
   useEffect(() => {
-    const fetchContact = async () => {
+    const fetchAddress = async () => {
       try {
         setIsLoading(true);
-        const result = await basicService.getAllContact();
+        const result = await basicService.getAllAddress();
         if (result?.data?.length) {
-          setContacts(result.data);
+          setAddresses(result.data);
         }
       } catch (error) {
         error;
@@ -56,7 +56,7 @@ export default function SelectContactInfo() {
       }
     };
 
-    fetchContact();
+    fetchAddress();
   }, []);
 
   return (
@@ -66,7 +66,7 @@ export default function SelectContactInfo() {
           انتخاب آدرس‌ها
         </Heading>
 
-        <ContactInfoManager onChange={setContacts} />
+        <AddressInfoManager onChange={setAddresses} />
       </div>
 
       {/* Loading Overlay */}
@@ -76,26 +76,26 @@ export default function SelectContactInfo() {
         </div>
       ) : (
         <div className='w-full flex gap-4 flex-col'>
-          {/* Delivery Contact */}
+          {/* Delivery Address */}
           <div className='border rounded-lg p-4 md:p-10'>
             <Heading variant='titleMedium'>آدرس تحویل</Heading>
             <div className='w-full flex flex-col gap-2'>
-              <ContactSelector
-                contacts={contacts}
-                onSelected={handleSelectDeliveryContactId}
-                defaultContactId={deliveryContact?.id}
+              <AddressSelector
+                addresses={addresses}
+                onSelected={handleSelectDeliveryAddressId}
+                defaultAddressId={deliveryAddress?.id}
               />
             </div>
           </div>
 
-          {/* Billing Contact */}
+          {/* Billing Address */}
           <div className='border rounded-lg p-4 md:p-10'>
             <Heading variant='titleMedium'>آدرس صورتحساب</Heading>
             <div className='w-full flex flex-col gap-2'>
-              <ContactSelector
-                contacts={contacts}
-                onSelected={handleSelectBillingContactId}
-                defaultContactId={billingContact?.id}
+              <AddressSelector
+                addresses={addresses}
+                onSelected={handleSelectBillingAddressId}
+                defaultAddressId={billingAddress?.id}
               />
             </div>
           </div>

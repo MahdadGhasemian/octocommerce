@@ -18,6 +18,7 @@ nginx_server_name_rabbitmq: "rabbitmq.{{ domain_name }}"
 nginx_server_name_minio_console: "minio.{{ domain_name }}"
 nginx_server_name_api: "api.{{ domain_name }}"
 nginx_server_name_panel: "panel.{{ domain_name }}"
+nginx_server_name_website: "{{ domain_name }}"
 
 # PostgreSQL
 postgres_image: postgres:15
@@ -157,6 +158,10 @@ panel_image: mahdad1988/octo-commerce-panel
 panel_container_name: panel
 panel_container_port: 3000
 
+# Website
+website_image: mahdad1988/octo-commerce-website
+website_container_name: website
+website_container_port: 3000
 
 # Common
 jwt_secret: "longsecretphrase"

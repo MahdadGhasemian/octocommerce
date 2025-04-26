@@ -6,7 +6,7 @@ services:
     volumes:
       - ./nginx-development-gateway.conf:/etc/nginx/conf.d/default.conf
     ports:
-      - "4058:4058"
+      - "4000:4000"
     depends_on:
       - auth
       - store
@@ -14,35 +14,6 @@ services:
       - notification
       - file
       - bot
-      - panel
-      - website
-  
-  # Frontend Services
-  # Panel
-  panel:
-    build:
-      context: ./frontend/panel
-      dockerfile: ./Dockerfile.dev
-      target: development
-    command: pnpm run dev
-    env_file:
-      - ./frontend/panel/.env
-    volumes:
-      - ./frontend/panel:/usr/src/app
-      - panel_next_build_cache:/usr/src/app/.next
-
-  # Website
-  website:
-    build:
-      context: ./frontend/website
-      dockerfile: ./Dockerfile.dev
-      target: development
-    command: pnpm run dev
-    env_file:
-      - ./frontend/website/.env.local
-    volumes:
-      - ./frontend/website:/usr/src/app
-      - website_next_build_cache:/usr/src/app/.next
 
   # Backend Services
   # Auth Service
@@ -240,5 +211,3 @@ volumes:
   minio_data:
   rabbitmq_data:
   invoices_data:
-  panel_next_build_cache:
-  website_next_build_cache:

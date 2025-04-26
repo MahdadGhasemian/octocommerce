@@ -1,19 +1,19 @@
-'use client'
+'use client';
 
-import React from 'react'
+import React from 'react';
 
-import Map from '@/components/map'
+import Map from '@/components/map';
 
-import { Contact } from '@/services/basic.service'
+import { Address } from '@/services/basic.service';
 
-interface ContactInfoProps {
-  contact?: Partial<Contact>
-  variant: 'detail' | 'short' | 'card'
+interface AddressInfoProps {
+  address?: Partial<Address>;
+  variant: 'detail' | 'short' | 'card';
 }
 
-export default function ContactInfo(props: ContactInfoProps) {
+export default function AddressInfo(props: AddressInfoProps) {
   // ** Props
-  const { contact, variant = 'detail' } = props
+  const { address, variant = 'detail' } = props;
 
   const renderField = ({ label, value, fullWidth }: { label: string; value?: string; fullWidth?: boolean }) => (
     <div className={`flex flex-col gap-1 ${fullWidth ? 'md:col-span-2' : ''}`}>
@@ -22,77 +22,75 @@ export default function ContactInfo(props: ContactInfoProps) {
         {value || <span className='text-gray-400'>-</span>}
       </div>
     </div>
-  )
+  );
 
   return (
     <div>
       {variant === 'short' ? (
         <div className='flex flex-col gap-1'>
-          <div>{contact?.title || contact?.name}</div>
-          <div>{contact?.address}</div>
+          <div>{address?.title}</div>
+          <div>{address?.address}</div>
           <div>
             <span>کد پستی :‌ </span>
-            {contact?.postal_code}
+            {address?.postal_code}
           </div>
           <div>
             <span>کد ملی : </span>
-            {contact?.national_code}
+            {address?.national_code}
           </div>
         </div>
       ) : variant === 'detail' ? (
         <div className='grid grid-cols-1 gap-4 p-4 md:grid-cols-2'>
           {/* Title */}
-          {renderField({ label: 'عنوان', value: contact?.title })}
-          {/* Name */}
-          {renderField({ label: 'نام کامل / نام شرکت', value: contact?.name })}
+          {renderField({ label: 'عنوان', value: address?.title })}
           {/* Phone */}
           {renderField({
             label: 'تلفن ثابت با پیش شماره',
-            value: contact?.phone
+            value: address?.phone,
           })}
           {/* Mobile Phone */}
-          {renderField({ label: 'شماره موبایل', value: contact?.mobile_phone })}
+          {renderField({ label: 'شماره موبایل', value: address?.mobile_phone })}
           {/* Address (Full Width) */}
           {renderField({
             label: 'آدرس کامل',
-            value: contact?.address,
-            fullWidth: true
+            value: address?.address,
+            fullWidth: true,
           })}
           {/* City */}
-          {renderField({ label: 'شهر', value: contact?.city })}
+          {renderField({ label: 'شهر', value: address?.city })}
           {/* Postal Code */}
-          {renderField({ label: 'کد پستی', value: contact?.postal_code })}
+          {renderField({ label: 'کد پستی', value: address?.postal_code })}
           {/* National Code */}
           {renderField({
             label: 'کد ملی / شناسه ملی',
-            value: contact?.national_code
+            value: address?.national_code,
           })}
           {/* Economic Code */}
-          {renderField({ label: 'کد اقتصادی', value: contact?.economic_code })}
+          {renderField({ label: 'کد اقتصادی', value: address?.economic_code })}
         </div>
       ) : (
         <div className='card bg-base-100 w-full shadow-xl flex flex-col justify-between border'>
           <div className='card-body flex-grow'>
-            <h2 className='card-title'>{contact?.title || contact?.name}</h2>
-            <p className={`${contact?.address ? '' : 'invisible'}`}>{contact?.address || 'Placeholder Address'}</p>
+            <h2 className='card-title'>{address?.title}</h2>
+            <p className={`${address?.address ? '' : 'invisible'}`}>{address?.address || 'Placeholder Address'}</p>
           </div>
           <figure className='flex-shrink-0'>
             {/* Map */}
             <div className='w-full h-96 z-40'>
               <Map
                 location={{
-                  lat: contact?.latitude || 35.7172,
-                  lng: contact?.longitude || 51.3995
+                  lat: address?.latitude || 35.7172,
+                  lng: address?.longitude || 51.3995,
                 }}
                 scrollWheelZoom={false}
                 locationAsCenter={true}
                 readOnly={true}
-                title={contact?.title || contact?.name}
+                title={address?.title}
               />
             </div>
           </figure>
         </div>
       )}
     </div>
-  )
+  );
 }

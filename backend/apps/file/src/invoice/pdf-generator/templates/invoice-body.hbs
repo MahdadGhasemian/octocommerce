@@ -91,7 +91,7 @@
       width: 48%;
     }
 
-    .payment-part2-contact {
+    .payment-part2-address {
       text-align: left;
       width: 48%;
     }
@@ -180,36 +180,36 @@
         <tr>
           <td>نام خریدار :</td>
           <td colspan="3">
-            {{contact_snapshot.name}}
+            {{address.name}}
           </td>
 
           <td>شناسه ملی / شماره ملی :</td>
           <td>
-            {{contact_snapshot.national_code}}
+            {{address.national_code}}
           </td>
         </tr>
         <tr>
           <td>تلفن ثابت :</td>
           <td>
-            {{contact_snapshot.phone}}
+            {{address.phone}}
           </td>
           <td>تلفن همراه :</td>
           <td>
-            {{contact_snapshot.mobile_phone}}
+            {{address.mobile_phone}}
           </td>
           <td>کد اقتصادی :</td>
           <td>
-            {{contact_snapshot.economic_code}}
+            {{address.economic_code}}
           </td>
         </tr>
         <tr>
           <td>نشانی :</td>
           <td colspan="3">
-            {{contact_snapshot.address}}
+            {{address.address}}
           </td>
           <td>کد پستی :</td>
           <td>
-            {{contact_snapshot.postal_code}}
+            {{address.postal_code}}
           </td>
         </tr>
       </table>
@@ -284,7 +284,7 @@
         </tr>
         <tr>
           <td class="payment-part1"></td>
-          <td class="payment-part2-contact" colspan="4">
+          <td class="payment-part2-address" colspan="4">
             <span style="padding-left: 10px;">https://octocommerce.ir</span>
             <span style="padding-left: 10px;">info@octocommerce.ir</span>
             <span style="padding-left: 10px;">09129632744</span>
@@ -295,7 +295,7 @@
         </tr>
         <tr>
           <td class="payment-part1"></td>
-          <td class="payment-part2-contact" colspan="4"></td>
+          <td class="payment-part2-address" colspan="4"></td>
           <td class="payment-part5">مبلغ قابل پرداخت</td>
           <td class="payment-part6">{{currency total}}</td>
         </tr>

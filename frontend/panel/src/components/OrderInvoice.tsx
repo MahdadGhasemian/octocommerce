@@ -22,7 +22,7 @@ import {
 import { Plus } from 'mdi-material-ui'
 
 // ** Services Import
-import BasicService, { Contact } from '@/services/basic.service'
+import BasicService, { Address } from '@/services/basic.service'
 
 // ** Component Imports
 import { NumericFormat, NumericFormatProps } from 'react-number-format'
@@ -76,60 +76,60 @@ const NumericFormatCustom = forwardRef<NumericFormatProps, NumericFormatCustomPr
 })
 
 type Props = {
-  contact: Contact | null
-  onSelectContact: any
+  address: Address | null
+  onSelectAddress: any
   label?: string
   user: User | null
 }
 
 const OrderInvoice = (props: Props) => {
   // ** Props
-  const { contact, onSelectContact, label, user } = props
+  const { address, onSelectAddress, label, user } = props
 
   // ** Global State
   const isUser = useSelector(isCustomerUser)
 
   // ** States
-  const [contactList, setContactList] = useState<Array<Contact>>()
-  const [newContact, setNewContact] = useState<Partial<Contact>>()
+  const [addressList, setAddressList] = useState<Array<Address>>()
+  const [newAddress, setNewAddress] = useState<Partial<Address>>()
   const [open, setOpen] = useState(false)
 
-  const fetchContacts = async () => {
+  const fetchAddresses = async () => {
     if (isUser) {
-      const contacts = await BasicService.getAllContact(1000, 1)
-      setContactList(contacts.data)
+      const addresses = await BasicService.getAllAddress(1000, 1)
+      setAddressList(addresses.data)
     } else {
-      const contactFilters = user ? [{ id: 'user_id', value: user.id, operator: '$eq' }] : []
-      const contacts = await BasicService.getAllContact(1000, 1, undefined, contactFilters)
-      setContactList(contacts.data)
+      const addressFilters = user ? [{ id: 'user_id', value: user.id, operator: '$eq' }] : []
+      const addresses = await BasicService.getAllAddress(1000, 1, undefined, addressFilters)
+      setAddressList(addresses.data)
     }
   }
 
-  const handleContact = (value: Contact | null | undefined) => {
+  const handleAddress = (value: Address | null | undefined) => {
     if (value) {
-      onSelectContact(value)
+      onSelectAddress(value)
     }
   }
 
-  const handleAddNewContact = async () => {
-    if (newContact) {
+  const handleAddNewAddress = async () => {
+    if (newAddress) {
       if (isUser) {
-        const contact = await BasicService.createContact({ ...newContact })
-        onSelectContact(contact)
+        const address = await BasicService.createAddress({ ...newAddress })
+        onSelectAddress(address)
       } else {
         if (user) {
-          const contact = await BasicService.createContactForOtherUser({ ...newContact, user_id: +user.id })
-          onSelectContact(contact)
+          const address = await BasicService.createAddressForOtherUser({ ...newAddress, user_id: +user.id })
+          onSelectAddress(address)
         }
       }
 
-      fetchContacts()
+      fetchAddresses()
     }
     handleClose()
   }
 
   const handleClickOpen = () => {
-    setNewContact({})
+    setNewAddress({})
     setOpen(true)
   }
 
@@ -138,10 +138,10 @@ const OrderInvoice = (props: Props) => {
   }
 
   useEffect(() => {
-    fetchContacts()
+    fetchAddresses()
   }, [user])
 
-  if (!contactList) return <p>در حال آماده سازی اطلاعات ...</p>
+  if (!addressList) return <p>در حال آماده سازی اطلاعات ...</p>
 
   return (
     <Box>
@@ -154,9 +154,9 @@ const OrderInvoice = (props: Props) => {
                 fullWidth
                 label='عنوان'
                 placeholder='شرکت'
-                value={newContact?.title}
+                value={newAddress?.title}
                 onChange={e => {
-                  setNewContact({ ...newContact, title: e.target.value })
+                  setNewAddress({ ...newAddress, title: e.target.value })
                 }}
               />
             </Grid>
@@ -164,20 +164,9 @@ const OrderInvoice = (props: Props) => {
               <TextField
                 fullWidth
                 label='تلفن ثابت'
-                value={newContact?.phone}
+                value={newAddress?.phone}
                 onChange={e => {
-                  setNewContact({ ...newContact, phone: e.target.value })
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label='نام'
-                placeholder='شرکت'
-                value={newContact?.name}
-                onChange={e => {
-                  setNewContact({ ...newContact, name: e.target.value })
+                  setNewAddress({ ...newAddress, phone: e.target.value })
                 }}
               />
             </Grid>
@@ -185,9 +174,9 @@ const OrderInvoice = (props: Props) => {
               <TextField
                 fullWidth
                 label='تلفن همراه'
-                value={newContact?.mobile_phone}
+                value={newAddress?.mobile_phone}
                 onChange={e => {
-                  setNewContact({ ...newContact, mobile_phone: e.target.value })
+                  setNewAddress({ ...newAddress, mobile_phone: e.target.value })
                 }}
               />
             </Grid>
@@ -195,9 +184,9 @@ const OrderInvoice = (props: Props) => {
               <TextField
                 fullWidth
                 label='آدرس'
-                value={newContact?.address}
+                value={newAddress?.address}
                 onChange={e => {
-                  setNewContact({ ...newContact, address: e.target.value })
+                  setNewAddress({ ...newAddress, address: e.target.value })
                 }}
               />
             </Grid>
@@ -205,9 +194,9 @@ const OrderInvoice = (props: Props) => {
               <TextField
                 fullWidth
                 label='کد پستی'
-                value={newContact?.postal_code}
+                value={newAddress?.postal_code}
                 onChange={e => {
-                  setNewContact({ ...newContact, postal_code: e.target.value })
+                  setNewAddress({ ...newAddress, postal_code: e.target.value })
                 }}
                 InputProps={{ style: { direction: 'ltr' }, inputComponent: NumericFormatCustom as any }}
               />
@@ -216,9 +205,9 @@ const OrderInvoice = (props: Props) => {
               <TextField
                 fullWidth
                 label='کد ملی'
-                value={newContact?.national_code}
+                value={newAddress?.national_code}
                 onChange={e => {
-                  setNewContact({ ...newContact, national_code: e.target.value })
+                  setNewAddress({ ...newAddress, national_code: e.target.value })
                 }}
                 InputProps={{ style: { direction: 'ltr' }, inputComponent: NumericFormatCustom as any }}
               />
@@ -227,9 +216,9 @@ const OrderInvoice = (props: Props) => {
               <TextField
                 fullWidth
                 label='کد اقتصادی'
-                value={newContact?.economic_code}
+                value={newAddress?.economic_code}
                 onChange={e => {
-                  setNewContact({ ...newContact, economic_code: e.target.value })
+                  setNewAddress({ ...newAddress, economic_code: e.target.value })
                 }}
                 InputProps={{ style: { direction: 'ltr' }, inputComponent: NumericFormatCustom as any }}
               />
@@ -237,7 +226,7 @@ const OrderInvoice = (props: Props) => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <ButtonStyled variant='contained' component='label' onClick={handleAddNewContact}>
+          <ButtonStyled variant='contained' component='label' onClick={handleAddNewAddress}>
             ذخیره
           </ButtonStyled>
           <CancelButtonStyled color='error' variant='outlined' onClick={handleClose}>
@@ -248,20 +237,20 @@ const OrderInvoice = (props: Props) => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Autocomplete
-            id='contact'
+            id='address'
             fullWidth
-            value={contact}
-            getOptionLabel={contacts => `${contacts.title || contacts?.name}`}
-            options={contactList}
+            value={address}
+            getOptionLabel={addresses => addresses.title}
+            options={addressList}
             isOptionEqualToValue={(option, value) => option.id === value?.id}
             noOptionsText={'هیچ آیتمی موجود نیست'}
-            renderOption={(props, contacts) => (
-              <Box component='li' {...props} key={contacts.id}>
-                {contacts.title || contacts?.name}
+            renderOption={(props, addresses) => (
+              <Box component='li' {...props} key={addresses.id}>
+                {addresses.title}
               </Box>
             )}
             renderInput={params => <TextField {...params} label={label} />}
-            onChange={(_, value) => handleContact(value)}
+            onChange={(_, value) => handleAddress(value)}
             PaperComponent={({ children }) => {
               return (
                 <Paper>
@@ -282,9 +271,8 @@ const OrderInvoice = (props: Props) => {
           />
         </Grid>
         <Grid item xs={12}>
-          <Typography variant='body2'>{contact?.name}</Typography>
-          <Typography variant='body2'>{contact?.address}</Typography>
-          <Typography variant='body2'>{contact?.national_code}</Typography>
+          <Typography variant='body2'>{address?.address}</Typography>
+          <Typography variant='body2'>{address?.national_code}</Typography>
         </Grid>
       </Grid>
     </Box>

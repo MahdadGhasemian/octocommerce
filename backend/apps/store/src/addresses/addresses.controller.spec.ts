@@ -1,4 +1,4 @@
-describe('ContactsController', () => {
+describe('AddressesController', () => {
   beforeEach(async () => {});
 
   describe('root', () => {

@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@/lib/store/store';
 
 import {
-  Contact,
+  Address,
   DeliveryMethod,
   DeliveryMethodAreaRule,
   DeliveryPricingType,
@@ -42,8 +42,8 @@ export interface CartState {
   tax_amount: number;
   round_amount: number;
   total: number;
-  deliveryContact?: Partial<Contact> | null;
-  billingContact?: Partial<Contact> | null;
+  deliveryAddress?: Partial<Address> | null;
+  billingAddress?: Partial<Address> | null;
   deliveryMethod?: DeliveryMethod | null;
   deliveryMethodAreaRule?: DeliveryMethodAreaRule | null;
   setting?: Setting | null;
@@ -60,8 +60,8 @@ const initialState: CartState = {
   tax_amount: 0,
   round_amount: 0,
   total: 0,
-  deliveryContact: null,
-  billingContact: null,
+  deliveryAddress: null,
+  billingAddress: null,
   deliveryMethod: null,
   deliveryMethodAreaRule: null,
   setting: null,
@@ -121,17 +121,17 @@ export const cartSlice = createSlice({
       resetDeliveryMethod(state);
       generateFinalState(state);
     },
-    setDeliveryContact: (state, action: PayloadAction<Partial<Contact> | null>) => {
-      const contact = action.payload;
+    setDeliveryAddress: (state, action: PayloadAction<Partial<Address> | null>) => {
+      const address = action.payload;
 
-      state.deliveryContact = contact;
+      state.deliveryAddress = address;
 
       generateFinalState(state);
     },
-    setBillingContact: (state, action: PayloadAction<Partial<Contact> | null>) => {
-      const contact = action.payload;
+    setBillingAddress: (state, action: PayloadAction<Partial<Address> | null>) => {
+      const address = action.payload;
 
-      state.billingContact = contact;
+      state.billingAddress = address;
     },
     setDeliveryMethodSelected: (state, action: PayloadAction<DeliveryMethod>) => {
       const deliveryMethod = action.payload;
@@ -174,8 +174,8 @@ const generateFinalState = (state: CartState) => {
     state.deliveryMethodAreaRule,
     state.setting?.delivery_center_latitude,
     state.setting?.delivery_center_longitude,
-    state.deliveryContact?.latitude,
-    state.deliveryContact?.longitude
+    state.deliveryAddress?.latitude,
+    state.deliveryAddress?.longitude
   );
 
   state.subtotal = subtotal;
@@ -199,8 +199,8 @@ const calculatePrices = (
   deliveryMethodAreaRule?: DeliveryMethodAreaRule | null,
   delivery_center_latitude?: number,
   delivery_center_longitude?: number,
-  delivery_contact_latitude?: number,
-  delivery_contact_longitude?: number
+  delivery_address_latitude?: number,
+  delivery_address_longitude?: number
 ): {
   discount_amount: number;
   tax_amount: number;
@@ -225,8 +225,8 @@ const calculatePrices = (
     deliveryMethodAreaRule,
     delivery_center_latitude,
     delivery_center_longitude,
-    delivery_contact_latitude,
-    delivery_contact_longitude
+    delivery_address_latitude,
+    delivery_address_longitude
   );
 
   // tax amount
@@ -286,8 +286,8 @@ const calculateDeliveryCost = (
   deliveryMethodAreaRule?: DeliveryMethodAreaRule | null,
   delivery_center_latitude?: number,
   delivery_center_longitude?: number,
-  delivery_contact_latitude?: number,
-  delivery_contact_longitude?: number
+  delivery_address_latitude?: number,
+  delivery_address_longitude?: number
 ) => {
   let delivery_cost = 0;
 
@@ -303,8 +303,8 @@ const calculateDeliveryCost = (
         longitude: delivery_center_longitude,
       },
       {
-        latitude: delivery_contact_latitude,
-        longitude: delivery_contact_longitude,
+        latitude: delivery_address_latitude,
+        longitude: delivery_address_longitude,
       },
     ]);
   } else {
@@ -321,8 +321,8 @@ export const {
   clearItemFromCart,
   setCartSetting,
   resetCart,
-  setDeliveryContact,
-  setBillingContact,
+  setDeliveryAddress,
+  setBillingAddress,
   setDeliveryMethodSelected,
   setDeliveryMethodAreaRuleSelected,
 } = cartSlice.actions;
@@ -334,5 +334,5 @@ export const selectPackagingCost = (state: RootState) => state.cart.packaging_co
 export const selectDeliveryCost = (state: RootState) => state.cart.delivery_cost;
 export const selectDeliveryMethod = (state: RootState) => state.cart.deliveryMethod;
 export const selectDeliveryMethodAreaRule = (state: RootState) => state.cart.deliveryMethodAreaRule;
-export const selectDeliveryContact = (state: RootState) => state.cart.deliveryContact;
-export const selectBillingContact = (state: RootState) => state.cart.billingContact;
+export const selectDeliveryAddress = (state: RootState) => state.cart.deliveryAddress;
+export const selectBillingAddress = (state: RootState) => state.cart.billingAddress;

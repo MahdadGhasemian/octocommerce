@@ -11,7 +11,7 @@ import {
 } from 'class-validator';
 import { AbstractGetDto, GetUserDto, OrderStatus } from '@app/common';
 import { GetOrderItemDto } from './get-order-item.dto';
-import { GetContactDto } from './get-contact.dto';
+import { GetAddressDto } from './get-address.dto';
 import { GetDeliveryDto } from './get-delivery.dto';
 import { GetPaymentDto } from './get-payment.dto';
 
@@ -228,23 +228,15 @@ export class GetOrderDto extends AbstractGetDto {
   @IsNumber()
   @IsOptional()
   @Expose()
-  contact_id?: number;
+  delivery_address_id?: number;
 
   @ApiProperty({
-    type: GetContactDto,
+    type: GetAddressDto,
     required: true,
   })
-  @Type(() => GetContactDto)
+  @Type(() => GetAddressDto)
   @Expose()
-  contact?: GetContactDto;
-
-  @ApiProperty({
-    type: GetContactDto,
-    required: true,
-  })
-  @Type(() => GetContactDto)
-  @Expose()
-  contact_snapshot?: GetContactDto;
+  delivery_address?: GetAddressDto;
 
   @ApiProperty({
     required: true,
@@ -252,23 +244,15 @@ export class GetOrderDto extends AbstractGetDto {
   @IsNumber()
   @IsOptional()
   @Expose()
-  billing_contact_id?: number;
+  billing_address_id?: number;
 
   @ApiProperty({
-    type: GetContactDto,
+    type: GetAddressDto,
     required: true,
   })
-  @Type(() => GetContactDto)
+  @Type(() => GetAddressDto)
   @Expose()
-  billing_contact?: GetContactDto;
-
-  @ApiProperty({
-    type: GetContactDto,
-    required: true,
-  })
-  @Type(() => GetContactDto)
-  @Expose()
-  billing_contact_snapshot?: GetContactDto;
+  billing_address?: GetAddressDto;
 
   @ApiProperty({
     required: true,

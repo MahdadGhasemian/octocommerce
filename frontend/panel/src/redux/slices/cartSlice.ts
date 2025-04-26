@@ -1,7 +1,7 @@
 import {
+  Address,
   Category,
   CategoryTree,
-  Contact,
   DeliveryMethod,
   DeliveryMethodAreaRule,
   DeliveryPricingType,
@@ -36,8 +36,8 @@ export interface OrderItemType {
 }
 
 export interface CartState {
-  deliveryContact: Contact | null
-  billingContact: Contact | null
+  deliveryAddress: Address | null
+  billingAddress: Address | null
   items: Array<OrderItemType>
   payments: Array<Payment>
   subtotal: number
@@ -66,8 +66,8 @@ const getRandomInt = () => {
 }
 
 const initialState: CartState = {
-  deliveryContact: null,
-  billingContact: null,
+  deliveryAddress: null,
+  billingAddress: null,
   items: [
     {
       random_id: getRandomInt(),
@@ -122,13 +122,13 @@ export const cartSlice = createSlice({
       generateFinalState(state)
     },
 
-    setDeliveryContact: (state, action: PayloadAction<Contact>) => {
-      state.deliveryContact = action.payload
+    setDeliveryAddress: (state, action: PayloadAction<Address>) => {
+      state.deliveryAddress = action.payload
 
       generateFinalState(state)
     },
-    setBillingContact: (state, action: PayloadAction<Contact>) => {
-      state.billingContact = action.payload
+    setBillingAddress: (state, action: PayloadAction<Address>) => {
+      state.billingAddress = action.payload
     },
     addPayment: (state, action: PayloadAction<Payment>) => {
       state.payments.push({ ...action.payload })
@@ -185,8 +185,8 @@ const generateFinalState = (state: WritableDraft<CartState>) => {
     state.deliveryMethodAreaRule,
     state.setting?.delivery_center_latitude,
     state.setting?.delivery_center_longitude,
-    state.deliveryContact?.latitude,
-    state.deliveryContact?.longitude
+    state.deliveryAddress?.latitude,
+    state.deliveryAddress?.longitude
   )
 
   state.subtotal = subtotal
@@ -209,8 +209,8 @@ const calculatePrices = (
   deliveryMethodAreaRule?: DeliveryMethodAreaRule,
   delivery_center_latitude?: number,
   delivery_center_longitude?: number,
-  delivery_contact_latitude?: number,
-  delivery_contact_longitude?: number
+  delivery_address_latitude?: number,
+  delivery_address_longitude?: number
 ): {
   discount_amount: number
   tax_amount: number
@@ -235,8 +235,8 @@ const calculatePrices = (
     deliveryMethodAreaRule,
     delivery_center_latitude,
     delivery_center_longitude,
-    delivery_contact_latitude,
-    delivery_contact_longitude
+    delivery_address_latitude,
+    delivery_address_longitude
   )
 
   // tax amount
@@ -296,8 +296,8 @@ const calculateDeliveryCost = (
   deliveryMethodAreaRule?: DeliveryMethodAreaRule,
   delivery_center_latitude?: number,
   delivery_center_longitude?: number,
-  delivery_contact_latitude?: number,
-  delivery_contact_longitude?: number
+  delivery_address_latitude?: number,
+  delivery_address_longitude?: number
 ) => {
   let delivery_cost = 0
 
@@ -313,8 +313,8 @@ const calculateDeliveryCost = (
         longitude: delivery_center_longitude
       },
       {
-        latitude: delivery_contact_latitude,
-        longitude: delivery_contact_longitude
+        latitude: delivery_address_latitude,
+        longitude: delivery_address_longitude
       }
     ])
   } else {
@@ -336,14 +336,14 @@ export const {
   setDeliveryMethodAreaRuleSelected,
   setCartSetting,
   resetCart,
-  setDeliveryContact,
-  setBillingContact
+  setDeliveryAddress,
+  setBillingAddress
 } = cartSlice.actions
 
 export const selectDeliveryMethod = (state: RootState) => state.cart.deliveryMethod
 export const selectDeliveryMethodAreaRule = (state: RootState) => state.cart.deliveryMethodAreaRule
-export const selectDeliveryContact = (state: RootState) => state.cart.deliveryContact
-export const selectBillingContact = (state: RootState) => state.cart.billingContact
+export const selectDeliveryAddress = (state: RootState) => state.cart.deliveryAddress
+export const selectBillingAddress = (state: RootState) => state.cart.billingAddress
 export const selectItems = (state: RootState) => state.cart.items
 export const selectPayments = (state: RootState) => state.cart.payments
 export const selectNote = (state: RootState) => state.cart.note

@@ -36,7 +36,7 @@ export class CreateOrderDto {
     example: 1,
   })
   @IsNumber()
-  contact_id: number;
+  delivery_address_id: number;
 
   @ApiProperty({
     type: Number,
@@ -45,7 +45,7 @@ export class CreateOrderDto {
   })
   @IsNumber()
   @IsOptional()
-  billing_contact_id: number;
+  billing_address_id: number;
 
   @ApiProperty({
     type: CreateOrderItemDto,

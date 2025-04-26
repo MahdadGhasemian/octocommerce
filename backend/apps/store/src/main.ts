@@ -21,7 +21,7 @@ async function bootstrap() {
     .addTag('Health')
     .addTag('Analytics')
     .addTag('Settings')
-    .addTag('Contacts')
+    .addTag('Addresses')
     .addTag('Categories')
     .addTag('Products')
     .addTag('Orders')

@@ -42,13 +42,13 @@ import {
   selectOrderIsPending,
   selectConfirmedRejectedBy,
   resetCart,
-  selectDeliveryContact,
-  setDeliveryContact,
+  selectDeliveryAddress,
+  setDeliveryAddress,
   selectPackagingCost,
   selectDeliveryCost,
   selectRoundAmount,
-  selectBillingContact,
-  setBillingContact,
+  selectBillingAddress,
+  setBillingAddress,
   selectDeliveryMethod,
   selectDeliveryMethodAreaRule
 } from '@/redux/slices/cartSlice'
@@ -57,7 +57,7 @@ import { isCustomerUser } from '@/redux/slices/authSlice'
 import { toastError, toastInfo } from '@/redux/slices/snackbarSlice'
 
 // ** Services Import
-import BasicService, { Contact, DeliveryPricingType } from '@/services/basic.service'
+import BasicService, { Address, DeliveryPricingType } from '@/services/basic.service'
 import UserSelect from '@/components/UserSelect'
 import OrderInvoice from '@/components/OrderInvoice'
 import { User } from '@/services/auth.service'
@@ -111,8 +111,8 @@ const Invoice = () => {
   const orderIsPending = useSelector(selectOrderIsPending)
   const note = useSelector(selectNote)
   const confirmed_rejected_by = useSelector(selectConfirmedRejectedBy)
-  const deliveryContact = useSelector(selectDeliveryContact)
-  const billingContact = useSelector(selectBillingContact)
+  const deliveryAddress = useSelector(selectDeliveryAddress)
+  const billingAddress = useSelector(selectBillingAddress)
   const deliveryMethod = useSelector(selectDeliveryMethod)
   const deliveryMethodAreaRule = useSelector(selectDeliveryMethodAreaRule)
 
@@ -130,11 +130,11 @@ const Invoice = () => {
       return dispatch(toastError('لطفا روش ارسال را انتخاب نمایید.'))
     }
 
-    if (!deliveryContact) {
+    if (!deliveryAddress) {
       return dispatch(toastError('لطفا آدرس ارسال را انتخاب نمایید.'))
     }
 
-    if (!billingContact) {
+    if (!billingAddress) {
       return dispatch(toastError('لطفا آدرس صورتحساب را انتخاب نمایید.'))
     }
 
@@ -144,8 +144,8 @@ const Invoice = () => {
         deliveryMethod.delivery_pricing_type === DeliveryPricingType.SELECTED_AREA
           ? deliveryMethodAreaRule?.area_name
           : undefined,
-      contact_id: deliveryContact.id,
-      billing_contact_id: billingContact.id,
+      address_id: deliveryAddress.id,
+      billing_address_id: billingAddress.id,
 
       order_items: items
         .filter(item => item.product?.id && item.quantity)
@@ -185,12 +185,12 @@ const Invoice = () => {
     router.push('/invoice/list')
   }
 
-  const handleOnSelectDeliveryContact = async (contact: Contact) => {
-    dispatch(setDeliveryContact(contact))
+  const handleOnSelectDeliveryAddress = async (address: Address) => {
+    dispatch(setDeliveryAddress(address))
   }
 
-  const handleOnSelectBillingContact = async (contact: Contact) => {
-    dispatch(setBillingContact(contact))
+  const handleOnSelectBillingAddress = async (address: Address) => {
+    dispatch(setBillingAddress(address))
   }
 
   const handleUserSelect = (user: User | null) => {
@@ -226,16 +226,16 @@ const Invoice = () => {
             )}
             <Grid item xs={12} md={4}>
               <OrderInvoice
-                contact={deliveryContact}
-                onSelectContact={handleOnSelectDeliveryContact}
+                address={deliveryAddress}
+                onSelectAddress={handleOnSelectDeliveryAddress}
                 user={user}
                 label='آدرس حمل'
               />
             </Grid>
             <Grid item xs={12} md={4}>
               <OrderInvoice
-                contact={billingContact}
-                onSelectContact={handleOnSelectBillingContact}
+                address={billingAddress}
+                onSelectAddress={handleOnSelectBillingAddress}
                 user={user}
                 label='آدرس صورتحساب'
               />

@@ -12,13 +12,10 @@ import { Payment } from './payment.entity';
 import { User } from './user.entity';
 import { Delivery } from './delivery.entity';
 import { AbstractEntity } from '../../../common/src/database/abstract.entity';
-import { ContactType, OrderStatus } from '../../../common/src/enum/enums';
-import { Contact } from './contact.entity';
+import { OrderStatus } from '../../../common/src/enum/enums';
 
-export interface ContactData {
-  contact_type?: ContactType;
+export interface AddressData {
   title?: string;
-  name: string;
   phone?: string;
   mobile_phone?: string;
   address?: string;
@@ -110,27 +107,11 @@ export class Order extends AbstractEntity<Order> {
   @OneToMany(() => OrderItem, (orderItem) => orderItem.order, { cascade: true })
   order_items: OrderItem[];
 
-  @Column({ nullable: true })
-  @Index()
-  contact_id: number;
-
-  @ManyToOne(() => Contact, (contact) => contact.orders)
-  @JoinColumn({ name: 'contact_id' })
-  contact: Contact;
+  @Column({ type: 'jsonb', nullable: true })
+  delivery_address: AddressData;
 
   @Column({ type: 'jsonb', nullable: true })
-  contact_snapshot: ContactData;
-
-  @Column({ nullable: true })
-  @Index()
-  billing_contact_id: number;
-
-  @ManyToOne(() => Contact, (contact) => contact.billing_orders)
-  @JoinColumn({ name: 'billing_contact_id' })
-  billing_contact: Contact;
-
-  @Column({ type: 'jsonb', nullable: true })
-  billing_contact_snapshot: ContactData;
+  billing_address: AddressData;
 
   @Column({ default: false })
   is_confirmed_rejected_by_system: boolean;

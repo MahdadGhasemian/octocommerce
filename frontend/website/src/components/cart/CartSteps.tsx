@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { selectCart, selectDeliveryContact, selectDeliveryMethod } from '@/lib/store/features/cart/cartSlice';
+import { selectCart, selectDeliveryAddress, selectDeliveryMethod } from '@/lib/store/features/cart/cartSlice';
 import { cn } from '@/lib/utils';
 
 import CartItems from '@/components/cart/CartItems';
 import DeliveryMethodSelection from '@/components/cart/DeliveryMethodSelection';
 import ProfileManage from '@/components/users/ProfileManage';
-import SelectContactInfo from '@/components/users/SelectContactInfo';
+import SelectAddressInfo from '@/components/users/SelectAddressInfo';
 
 interface CartStepsProps {
   needToSetName: boolean;
@@ -19,14 +19,14 @@ const CartSteps = (props: CartStepsProps) => {
 
   // ** Store
   const { isEmpty } = useSelector(selectCart);
-  const deliveryContact = useSelector(selectDeliveryContact);
+  const deliveryAddress = useSelector(selectDeliveryAddress);
   const deliveryMethod = useSelector(selectDeliveryMethod);
 
   // ** State
   const [activeStep, setActiveStep] = useState(1);
 
   // ** Vars
-  const deliveryContactIsValid = deliveryContact && deliveryContact.id;
+  const deliveryAddressIsValid = deliveryAddress && deliveryAddress.id;
   const deliveryMethodIsValid = deliveryMethod && deliveryMethod.id;
 
   // Function to handle step click
@@ -53,10 +53,10 @@ const CartSteps = (props: CartStepsProps) => {
               مشخصات کاربری
             </li>
             <li
-              data-content={deliveryContactIsValid ? '✓' : '3'}
+              data-content={deliveryAddressIsValid ? '✓' : '3'}
               className={cn(
                 'step cursor-pointer',
-                activeStep === 3 ? (deliveryContactIsValid ? 'step-success' : 'step-primary') : ''
+                activeStep === 3 ? (deliveryAddressIsValid ? 'step-success' : 'step-primary') : ''
               )}
               onClick={() => handleStepClick(3)}
             >
@@ -82,10 +82,10 @@ const CartSteps = (props: CartStepsProps) => {
               مشاهده کالاها
             </li>
             <li
-              data-content={deliveryContactIsValid ? '✓' : '2'}
+              data-content={deliveryAddressIsValid ? '✓' : '2'}
               className={cn(
                 'step cursor-pointer',
-                activeStep === 3 ? (deliveryContactIsValid ? 'step-success' : 'step-primary') : ''
+                activeStep === 3 ? (deliveryAddressIsValid ? 'step-success' : 'step-primary') : ''
               )}
               onClick={() => handleStepClick(3)}
             >
@@ -118,10 +118,10 @@ const CartSteps = (props: CartStepsProps) => {
         </div>
       )}
 
-      {/* Display Contacts Selection only for Step 3 */}
+      {/* Display Addresses Selection only for Step 3 */}
       {activeStep === 3 && (
         <div className='w-full'>
-          <SelectContactInfo />
+          <SelectAddressInfo />
         </div>
       )}
 

@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 
 import { useRequireLogin } from '@/hooks/useRequireLogin';
 
-import Contacts from '@/components/users/Contacts';
+import Addresses from '@/components/users/Addresses';
 import Profile from '@/components/users/Profile';
 
 export default function Page() {
@@ -21,7 +21,7 @@ export default function Page() {
   return (
     <div className='border rounded-lg w-full bg-white shadow-lg pb-24'>
       <Profile />
-      <Contacts />
+      <Addresses />
     </div>
   );
 }

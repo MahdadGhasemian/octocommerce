@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber } from 'class-validator';
-import { CreateContactDto } from './create-contact.dto';
+import { CreateAddressDto } from './create-address.dto';
 
-export class CreateContactForOtherUserDto extends CreateContactDto {
+export class CreateAddressForOtherUserDto extends CreateAddressDto {
   @ApiProperty({
     required: true,
   })

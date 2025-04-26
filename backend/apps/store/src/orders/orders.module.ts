@@ -8,7 +8,7 @@ import { ProductsModule } from '../products/products.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SettingsModule } from '../settings/settings.module';
-import { ContactsModule } from '../contacts/contacts.module';
+import { AddressesModule } from '../addresses/addresses.module';
 import { Delivery, Order, OrderItem, User } from '@app/store';
 import { DeliveryMethodsModule } from '../delivery-methods/delivery-methods.module';
 
@@ -24,7 +24,7 @@ import { DeliveryMethodsModule } from '../delivery-methods/delivery-methods.modu
     TypeOrmModule.forFeature([User, Order, OrderItem, Delivery]),
     ProductsModule,
     SettingsModule,
-    ContactsModule,
+    AddressesModule,
     DeliveryMethodsModule,
   ],
   controllers: [OrdersController],

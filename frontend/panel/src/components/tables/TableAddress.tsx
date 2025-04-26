@@ -40,7 +40,7 @@ import MaterialReactTable, {
 import { MRT_Localization_FA } from 'material-react-table/locales/fa'
 
 // ** Services Import
-import BasicService, { Contact } from '@/services/basic.service'
+import BasicService, { Address } from '@/services/basic.service'
 
 // ** Comnfirmation Import
 import { useConfirmation } from '@/context/confirmationContext'
@@ -56,7 +56,7 @@ const ButtonStyled = styled(Button)<ButtonProps>(({ theme }) => ({
   }
 }))
 
-const TableContact = () => {
+const TableAddress = () => {
   // ** Hook
   const theme = useTheme()
 
@@ -68,7 +68,7 @@ const TableContact = () => {
   const { confirm } = useConfirmation()
 
   //data and fetching state
-  const [data, setData] = useState<Contact[]>([])
+  const [data, setData] = useState<Address[]>([])
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isRefetching, setIsRefetching] = useState(false)
@@ -103,7 +103,7 @@ const TableContact = () => {
       }
 
       try {
-        const response = await BasicService.getAllContact(
+        const response = await BasicService.getAllAddress(
           pagination.pageSize,
           pagination.pageIndex + 1,
           globalFilter,
@@ -124,21 +124,21 @@ const TableContact = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [columnFilters, globalFilter, pagination.pageIndex, pagination.pageSize, sorting, refreshKey])
 
-  const handleCreateNewRow = async (values: Contact) => {
+  const handleCreateNewRow = async (values: Address) => {
     try {
-      await BasicService.createContact(values)
+      await BasicService.createAddress(values)
 
       setRefreshKey(key => key + 1)
     } catch (error) {}
   }
 
-  const handleSaveRowEdits: MaterialReactTableProps<Contact>['onEditingRowSave'] = async ({
+  const handleSaveRowEdits: MaterialReactTableProps<Address>['onEditingRowSave'] = async ({
     exitEditingMode,
     values
   }) => {
     if (!Object.keys(validationErrors).length) {
       try {
-        await BasicService.editContact(values.id, values)
+        await BasicService.editAddress(values.id, values)
 
         setRefreshKey(key => key + 1)
       } catch (error) {}
@@ -151,15 +151,15 @@ const TableContact = () => {
     setValidationErrors({})
   }
 
-  const handleDeleteRow = useCallback(async (row: MRT_Row<Contact>) => {
+  const handleDeleteRow = useCallback(async (row: MRT_Row<Address>) => {
     const id: number = row.getValue('id')
-    const name = row.original.name
+    const name = row.original.title
 
     if (id) {
       confirm({ groupName: 'آدرس', name })
         .then(async () => {
           try {
-            await BasicService.deleteContact(id)
+            await BasicService.deleteAddress(id)
 
             setRefreshKey(key => key + 1)
           } catch (error) {}
@@ -169,7 +169,7 @@ const TableContact = () => {
   }, [])
 
   const getCommonEditTextFieldProps = useCallback(
-    (cell: MRT_Cell<Contact>): MRT_ColumnDef<Contact>['muiTableBodyCellEditTextFieldProps'] => {
+    (cell: MRT_Cell<Address>): MRT_ColumnDef<Address>['muiTableBodyCellEditTextFieldProps'] => {
       return {
         error: !!validationErrors[cell.id],
         helperText: validationErrors[cell.id],
@@ -199,7 +199,7 @@ const TableContact = () => {
     [validationErrors]
   )
 
-  const columns = useMemo<MRT_ColumnDef<Contact>[]>(
+  const columns = useMemo<MRT_ColumnDef<Address>[]>(
     () =>
       [
         {
@@ -216,12 +216,12 @@ const TableContact = () => {
           accessorKey: 'user',
           enableEditing: false,
           header: 'کاربر',
-          accessorFn: (row: Partial<Contact>) => `${row?.user?.first_name || ''} ${row?.user?.last_name || ''}`,
+          accessorFn: (row: Partial<Address>) => `${row?.user?.first_name || ''} ${row?.user?.last_name || ''}`,
           id: 'account',
           size: 240,
           exportData: {
             width: 25,
-            accessorFn: (row: Partial<Contact>) => `${row?.user?.first_name || ''} ${row?.user?.last_name || ''}`
+            accessorFn: (row: Partial<Address>) => `${row?.user?.first_name || ''} ${row?.user?.last_name || ''}`
           }
         },
         {
@@ -295,12 +295,12 @@ const TableContact = () => {
             width: 15
           }
         }
-      ].filter(Boolean) as MRT_ColumnDef<Contact>[],
+      ].filter(Boolean) as MRT_ColumnDef<Address>[],
     [getCommonEditTextFieldProps]
   )
 
   const handleFetchAllData = async () => {
-    return BasicService.getAllContact().then(data => data.data)
+    return BasicService.getAllAddress().then(data => data.data)
   }
 
   return (
@@ -399,7 +399,12 @@ const TableContact = () => {
             {!isSmallScreen && <MRT_ShowHideColumnsButton table={table} />}
             {!isSmallScreen && <MRT_ToggleDensePaddingButton table={table} />}
             <MRT_FullScreenToggleButton table={table} />
-            <ExportButton selectedData={data} columns={columns} filePreName='contacts' fetchData={handleFetchAllData} />
+            <ExportButton
+              selectedData={data}
+              columns={columns}
+              filePreName='addresses'
+              fetchData={handleFetchAllData}
+            />
           </>
         )}
       />
@@ -414,9 +419,9 @@ const TableContact = () => {
 }
 
 interface CreateModalProps {
-  columns: MRT_ColumnDef<Contact>[]
+  columns: MRT_ColumnDef<Address>[]
   onClose: () => void
-  onSubmit: (values: Contact) => void
+  onSubmit: (values: Address) => void
   open: boolean
 }
 
@@ -484,4 +489,4 @@ const validateEmail = (email: string) =>
     )
 const validateAge = (age: number) => age >= 18 && age <= 50
 
-export default TableContact
+export default TableAddress

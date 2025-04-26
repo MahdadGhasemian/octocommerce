@@ -1,30 +1,11 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { AbstractEntity } from '../../../common/src/database/abstract.entity';
 import { User } from './user.entity';
-import { Order } from './order.entity';
-import { ContactType } from '../../../common/src/enum';
 
 @Entity()
-export class Contact extends AbstractEntity<Contact> {
-  @Column({
-    type: 'enum',
-    enum: ContactType,
-    default: ContactType.INDIVIDUAL,
-  })
-  contact_type: ContactType;
-
+export class Address extends AbstractEntity<Address> {
   @Column({ nullable: true })
   title?: string;
-
-  @Column()
-  name: string;
 
   @Column({ nullable: true })
   phone: string;
@@ -57,13 +38,7 @@ export class Contact extends AbstractEntity<Contact> {
   @Index()
   user_id: number;
 
-  @ManyToOne(() => User, (user) => user.contacts)
+  @ManyToOne(() => User, (user) => user.addresses)
   @JoinColumn({ name: 'user_id' })
   user: User;
-
-  @OneToMany(() => Order, (order) => order.contact)
-  orders: Order[];
-
-  @OneToMany(() => Order, (order) => order.contact)
-  billing_orders: Order[];
 }

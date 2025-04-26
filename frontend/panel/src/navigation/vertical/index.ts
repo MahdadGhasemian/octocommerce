@@ -82,7 +82,7 @@ const navigation = (isInternalUser: boolean): VerticalNavItemsType => {
     {
       title: 'آدرس ها',
       icon: BookAccountOutline,
-      path: '/contact/list'
+      path: '/address/list'
     },
     {
       title: 'سفارش ها',

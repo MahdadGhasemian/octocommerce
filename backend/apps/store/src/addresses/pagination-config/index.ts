@@ -1,11 +1,10 @@
-import { Contact } from '@app/store';
+import { Address } from '@app/store';
 import { PaginateConfig } from 'nestjs-paginate';
 
-export const CONTACT_PAGINATION_CONFIG: PaginateConfig<Contact> = {
+export const ADDRESS_PAGINATION_CONFIG: PaginateConfig<Address> = {
   sortableColumns: [
     'id',
     'title',
-    'name',
     'phone',
     'mobile_phone',
     'address',
@@ -21,7 +20,6 @@ export const CONTACT_PAGINATION_CONFIG: PaginateConfig<Contact> = {
   relations: ['user'],
   searchableColumns: [
     'title',
-    'name',
     'phone',
     'mobile_phone',
     'address',
