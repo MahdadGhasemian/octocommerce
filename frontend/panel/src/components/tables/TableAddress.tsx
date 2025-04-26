@@ -51,10 +51,6 @@ import { useConfirmation } from '@/context/confirmationContext'
 import ExportButton from '../ExportButton'
 import UserSelect from '../UserSelect'
 
-// ** Redux Imports
-import { isCustomerUser } from '@/redux/slices/authSlice'
-import { useSelector } from 'react-redux'
-
 const ButtonStyled = styled(Button)<ButtonProps>(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     width: '100%',
@@ -72,9 +68,6 @@ const TableAddress = () => {
 
   // ** Confirm
   const { confirm } = useConfirmation()
-
-  // ** Global State
-  const isUser = useSelector(isCustomerUser)
 
   // ** States
   const [data, setData] = useState<Address[]>([])
@@ -135,11 +128,7 @@ const TableAddress = () => {
 
   const handleCreateNewRow = async (values: Address) => {
     try {
-      if (isUser) {
-        await BasicService.createAddress(values)
-      } else {
-        await BasicService.createAddressForOtherUser({ ...values, user_id: +values.user.id })
-      }
+      await BasicService.createAddressForOtherUser({ ...values, user_id: +values.user.id })
 
       setRefreshKey(key => key + 1)
     } catch (error) {}

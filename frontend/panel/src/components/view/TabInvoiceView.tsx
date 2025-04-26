@@ -27,7 +27,7 @@ import { DatePicker } from '@mui/x-date-pickers'
 import { useSelector } from 'react-redux'
 import { resetCart } from '@/redux/slices/cartSlice'
 import { store } from '@/redux/store'
-import { isInternalUser, isCustomerUser } from '@/redux/slices/authSlice'
+import { isInternalUser } from '@/redux/slices/authSlice'
 import { selectSetting } from '@/redux/slices/settingSlice'
 import { toastError, toastInfo, toastSuccess } from '@/redux/slices/snackbarSlice'
 
@@ -85,7 +85,6 @@ const TabInvoiceView = (props: Props) => {
 
   // ** Global State
   const isAccess = useSelector(isInternalUser)
-  const isUser = useSelector(isCustomerUser)
   const setting = useSelector(selectSetting)
 
   const { dispatch } = store
@@ -159,7 +158,7 @@ const TabInvoiceView = (props: Props) => {
     try {
       await handleSaveChanges()
 
-      if (!isUser && order?.id && order?.order_status === OrderStatus.Pending) {
+      if (order?.id && order?.order_status === OrderStatus.Pending) {
         if (status === OrderStatus.Confirmed) {
           if (!order.delivery_date) {
             return dispatch(toastError('لطفا تاریخ تحویل را مشخص نمایید.'))
@@ -276,7 +275,7 @@ const TabInvoiceView = (props: Props) => {
             </Grid>
 
             <Grid item xs={12} md={2}>
-              {!isUser && orderIsPending(order) && (
+              {orderIsPending(order) && (
                 <DatePicker
                   sx={{ width: '100%' }}
                   label='تاریخ تحویل'
@@ -383,42 +382,17 @@ const TabInvoiceView = (props: Props) => {
             </Grid>
 
             <Grid item xs={12}>
-              {isUser ? (
-                <TextField
-                  fullWidth
-                  type='text'
-                  label='یادداشت'
-                  multiline
-                  rows={2}
-                  value={order?.note || ''}
-                  InputProps={{ readOnly: true }}
-                />
-              ) : (
-                <TextField
-                  fullWidth
-                  type='text'
-                  label='یادداشت'
-                  multiline
-                  rows={2}
-                  value={order?.note || ''}
-                  onChange={e => setOrder({ ...order, note: e.target.value })}
-                />
-              )}
+              <TextField
+                fullWidth
+                type='text'
+                label='یادداشت'
+                multiline
+                rows={2}
+                value={order?.note || ''}
+                onChange={e => setOrder({ ...order, note: e.target.value })}
+              />
             </Grid>
             <Grid item xs={12}>
-              {!isUser ? (
-                <Stack direction='row' spacing={2}>
-                  <Typography variant='body2'>
-                    {order.order_status === OrderStatus.Confirmed ? 'تایید شده توسط:' : 'رد شده توسط:'}
-                  </Typography>
-                  <Typography variant='body2'>
-                    {order.confirmed_rejected_by?.first_name || ''} {order.confirmed_rejected_by?.last_name || ''}
-                  </Typography>
-                </Stack>
-              ) : (
-                <></>
-              )}
-
               {order.rejected_note && (
                 <Box
                   sx={{

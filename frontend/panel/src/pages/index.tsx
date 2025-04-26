@@ -22,7 +22,7 @@ import StatisticsCard from '@/views/dashboard/StatisticsCard'
 
 // ** Redux Imports
 import { useSelector } from 'react-redux'
-import { isInternalUser, isCustomerUser, selectIsLogin } from '@/redux/slices/authSlice'
+import { isInternalUser, selectIsLogin } from '@/redux/slices/authSlice'
 
 // ** Services Import
 import BasicService, { Stats } from '@/services/basic.service'
@@ -37,7 +37,6 @@ const Dashboard = () => {
 
   // ** Global State
   const isAccess = useSelector(isInternalUser)
-  const isUser = useSelector(isCustomerUser)
   const isLogin = useSelector(selectIsLogin)
 
   useEffect(() => {
@@ -49,10 +48,8 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!isUser) {
-          const statsData = await BasicService.getStats()
-          setStatsData(statsData)
-        }
+        const statsData = await BasicService.getStats()
+        setStatsData(statsData)
       } catch (error) {}
     }
 

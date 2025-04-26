@@ -25,17 +25,15 @@ import {
 } from '@mui/material'
 
 // ** Icons Imports
-import {  PlusThick } from 'mdi-material-ui'
+import { PlusThick } from 'mdi-material-ui'
 
 // ** Services Import
 import BasicService, { Payment, PaymentType } from '@/services/basic.service'
 import { toastError, toastSuccess } from '@/redux/slices/snackbarSlice'
 
 // ** Redux Imports
-import { useSelector } from 'react-redux'
 import { store } from '@/redux/store'
 import { PaymentStatus } from '@/services/basic.service'
-import { isCustomerUser } from '@/redux/slices/authSlice'
 
 // ** Services Import
 import StorageService from '@/services/storage.service'
@@ -136,9 +134,6 @@ const PaymentItem = (props: Props) => {
   // ** Vars
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
-  // ** Global State
-  const isUser = useSelector(isCustomerUser)
-
   // ** States
   const [amount, setAmount] = useState<number | string>(item?.amount || 0)
   const [paymentType, setPaymentType] = useState(item?.payment_type || PaymentType.RECEIPT)
@@ -177,7 +172,7 @@ const PaymentItem = (props: Props) => {
 
   const handleConfirmOrRejectPayment = async (status: PaymentStatus.Confirmed | PaymentStatus.Rejected) => {
     try {
-      if (!isUser && item?.id && paymentStatus === PaymentStatus.Pending) {
+      if (item?.id && paymentStatus === PaymentStatus.Pending) {
         if (status === PaymentStatus.Confirmed) {
           await BasicService.confrimPayment(item.id)
           dispatch(toastSuccess('رسید پرداخت با موفقیت تایید گردید.'))
@@ -320,7 +315,7 @@ const PaymentItem = (props: Props) => {
               {paymentStatus === PaymentStatus.Confirmed && (
                 <Chip
                   label={
-                    isUser || isSmallScreen || !item.confirmed_rejected_by ? (
+                    isSmallScreen || !item.confirmed_rejected_by ? (
                       <span>تایید شد </span>
                     ) : (
                       <>
@@ -351,10 +346,7 @@ const PaymentItem = (props: Props) => {
               )}
 
               {/*  */}
-              {isUser && paymentStatus === PaymentStatus.Pending && <Chip label='در انتظار تایید' color='secondary' />}
-
-              {/*  */}
-              {!isUser && paymentStatus === PaymentStatus.Pending && (
+              {paymentStatus === PaymentStatus.Pending && (
                 <SetStatus
                   confirmedValue={PaymentStatus.Confirmed}
                   rejectedValue={PaymentStatus.Rejected}

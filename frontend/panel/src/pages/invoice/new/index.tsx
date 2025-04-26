@@ -53,7 +53,6 @@ import {
   selectDeliveryMethodAreaRule
 } from '@/redux/slices/cartSlice'
 import { store } from '@/redux/store'
-import { isCustomerUser } from '@/redux/slices/authSlice'
 import { toastError, toastInfo } from '@/redux/slices/snackbarSlice'
 
 // ** Services Import
@@ -99,7 +98,6 @@ const Invoice = () => {
   const router = useRouter()
 
   // ** Global State
-  const isUser = useSelector(isCustomerUser)
   const items = useSelector(selectItems)
   const subtotal = useSelector(selectSubtotal)
   const packagingCost = useSelector(selectPackagingCost)
@@ -161,15 +159,11 @@ const Invoice = () => {
 
     if (ordeData.order_items?.length) {
       try {
-        if (isUser) {
-          await BasicService.createOrder(ordeData)
-        } else {
-          if (user) await BasicService.createOrderForOtherUser({ ...ordeData, user_id: +user.id })
-        }
+        if (user) await BasicService.createOrderForOtherUser({ ...ordeData, user_id: +user.id })
 
         dispatch(resetCart())
 
-        dispatch(toastInfo(' سفارش شما با موفقیت ثبت شد. لطفا تایید پیش فاکتور خود را از طریق همین پنل پیگیری نمایید.'))
+        dispatch(toastInfo('سفارش با موفقیت ثبت شد.'))
 
         router.push('/invoice/list')
       } catch (error) {}
@@ -219,11 +213,11 @@ const Invoice = () => {
           <Divider sx={{ marginTop: 5, marginBottom: 5 }} />
 
           <Grid container spacing={2}>
-            {!isUser && (
+            {
               <Grid item xs={12} md={4}>
                 <UserSelect onChange={user => handleUserSelect(user)} />
               </Grid>
-            )}
+            }
             <Grid item xs={12} md={4}>
               <OrderInvoice
                 address={deliveryAddress}
@@ -329,16 +323,14 @@ const Invoice = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              {!isUser ? (
+              {
                 <Stack direction='row' spacing={2}>
                   <Typography variant='body2'>تایید شده توسط: </Typography>
                   <Typography variant='body2'>
                     {confirmed_rejected_by?.first_name || ''} {confirmed_rejected_by?.last_name || ''}
                   </Typography>
                 </Stack>
-              ) : (
-                <></>
-              )}
+              }
             </Grid>
           </Grid>
         </CardContent>
