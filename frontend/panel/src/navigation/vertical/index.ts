@@ -40,6 +40,11 @@ const navigation = (isInternalUser: boolean): VerticalNavItemsType => {
       hidden
     },
     {
+      title: 'آدرس ها',
+      icon: BookAccountOutline,
+      path: '/address/list'
+    },
+    {
       title: 'دسته بندی',
       icon: ShapePlus,
       path: '/category/list',
@@ -66,6 +71,11 @@ const navigation = (isInternalUser: boolean): VerticalNavItemsType => {
       hidden
     },
     {
+      title: 'سفارش ها',
+      icon: ReceiptTextCheckOutline,
+      path: '/invoice/list'
+    },
+    {
       title: 'نظرات',
       icon: ReviewsOutlined,
       path: '/review/list',
@@ -78,16 +88,6 @@ const navigation = (isInternalUser: boolean): VerticalNavItemsType => {
       path: '/question/list',
       disabled: !isInternalUser,
       hidden
-    },
-    {
-      title: 'آدرس ها',
-      icon: BookAccountOutline,
-      path: '/address/list'
-    },
-    {
-      title: 'سفارش ها',
-      icon: ReceiptTextCheckOutline,
-      path: '/invoice/list'
     },
     {
       sectionTitle: 'پشتیبانی',
