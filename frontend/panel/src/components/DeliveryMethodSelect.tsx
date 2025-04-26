@@ -95,7 +95,9 @@ const DeliveryMethodSelect = () => {
         value={deliveryMethod}
         options={deliveryMethods}
         getOptionLabel={deliveryMethod =>
-          `${DeliveryTypeMap.get(deliveryMethod.delivery_type)} - ${deliveryMethod.description}`
+          `${DeliveryTypeMap.get(deliveryMethod.delivery_type)}${
+            deliveryMethod.description ? ' - ' + deliveryMethod.description : ''
+          }`
         }
         isOptionEqualToValue={(option, value) => option.id === value.id}
         noOptionsText={'هیچ آیتمی موجود نیست'}
@@ -113,16 +115,21 @@ const DeliveryMethodSelect = () => {
             gap={1}
           >
             <>
-              <Typography>{DeliveryTypeMap.get(deliveryMethod.delivery_type)}</Typography>-
-              <Typography
-                sx={{
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                  fontSize: '0.85rem !important'
-                }}
-              >
-                {deliveryMethod.description}
-              </Typography>
+              <Typography>{DeliveryTypeMap.get(deliveryMethod.delivery_type)}</Typography>
+              {deliveryMethod.description && (
+                <>
+                  <span>-</span>
+                  <Typography
+                    sx={{
+                      fontWeight: 600,
+                      textTransform: 'uppercase',
+                      fontSize: '0.85rem !important'
+                    }}
+                  >
+                    {deliveryMethod.description}
+                  </Typography>
+                </>
+              )}
             </>
           </Box>
         )}

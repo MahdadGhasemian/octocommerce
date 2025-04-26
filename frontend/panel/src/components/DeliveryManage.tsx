@@ -12,10 +12,8 @@ import { styled } from '@mui/material/styles'
 import BasicService, { Delivery, DeliveryStatus, DeliveryType, Order } from '@/services/basic.service'
 
 // ** Redux Imports
-import { useSelector } from 'react-redux'
 import { store } from '@/redux/store'
 import { PaymentStatus } from '@/services/basic.service'
-import { isCustomerUser } from '@/redux/slices/authSlice'
 import { toastInfo, toastSuccess } from '@/redux/slices/snackbarSlice'
 
 // ** Import Component
@@ -56,9 +54,6 @@ const DeliveryManage = (props: Props) => {
   // ** Props
   const { order, isSmallScreen } = props
 
-  // ** Global State
-  const isUser = useSelector(isCustomerUser)
-
   // ** State
   const [delivery, setDelivery] = useState<Partial<Delivery>>()
   const [deliveryError, setDeliveryError] = useState<Partial<DeliveryErrorType>>()
@@ -87,7 +82,7 @@ const DeliveryManage = (props: Props) => {
 
   const handleConfirmOrRejectDelivery = async (status: DeliveryStatus.Confirmed | PaymentStatus.Rejected) => {
     try {
-      if (!isUser && order?.id && deliveryIsPending) {
+      if (order?.id && deliveryIsPending) {
         if (status === DeliveryStatus.Confirmed) {
           const delivery_result = await BasicService.confirmDelivery(order.id, Number(delivery?.id))
           setDelivery(delivery_result)
@@ -324,44 +319,6 @@ const DeliveryManage = (props: Props) => {
                         readOnly: true
                       }}
                       error
-                    />
-                  </Grid>
-                )}
-                {isUser && !readOnly && !deliveryIsRejected && (
-                  <Grid item xs={2}>
-                    <Button
-                      fullWidth={isSmallScreen}
-                      size='large'
-                      variant='contained'
-                      sx={{ marginRight: 3.5 }}
-                      onClick={() => handleSave()}
-                      disabled={delivery.delivery_type === DeliveryType.SELF_PICKUP}
-                    >
-                      ذخیره
-                    </Button>
-                  </Grid>
-                )}
-                {isUser && deliveryIsRejected && (
-                  <Grid item xs={3}>
-                    <Button
-                      fullWidth={isSmallScreen}
-                      size='large'
-                      variant='contained'
-                      sx={{ marginRight: 3.5 }}
-                      onClick={() => handleEdit()}
-                    >
-                      اصلاح و ارسال مجدد
-                    </Button>
-                  </Grid>
-                )}
-
-                {!isUser && deliveryIsPending && (
-                  <Grid item xs={4}>
-                    <SetStatus
-                      confirmedValue={PaymentStatus.Confirmed}
-                      rejectedValue={PaymentStatus.Rejected}
-                      handleConfirmOrReject={handleConfirmOrRejectDelivery}
-                      setRejectNote={setRejectNote}
                     />
                   </Grid>
                 )}

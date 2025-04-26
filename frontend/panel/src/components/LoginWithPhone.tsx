@@ -274,7 +274,7 @@ const LoginWithPhone = () => {
 
           {values.customerWarning && (
             <a
-              href={`https://${process.env.NEXT_PUBLIC_DOMAIN_NAME}`}
+              href={`https://${process.env.NEXT_PUBLIC_STORE_DOMAIN_NAME}`}
               target='_blank'
               rel='noopener noreferrer'
               style={{ textDecoration: 'none', width: '100%' }}

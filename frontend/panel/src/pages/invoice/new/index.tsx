@@ -53,7 +53,6 @@ import {
   selectDeliveryMethodAreaRule
 } from '@/redux/slices/cartSlice'
 import { store } from '@/redux/store'
-import { isCustomerUser } from '@/redux/slices/authSlice'
 import { toastError, toastInfo } from '@/redux/slices/snackbarSlice'
 
 // ** Services Import
@@ -99,7 +98,6 @@ const Invoice = () => {
   const router = useRouter()
 
   // ** Global State
-  const isUser = useSelector(isCustomerUser)
   const items = useSelector(selectItems)
   const subtotal = useSelector(selectSubtotal)
   const packagingCost = useSelector(selectPackagingCost)
@@ -138,13 +136,13 @@ const Invoice = () => {
       return dispatch(toastError('لطفا آدرس صورتحساب را انتخاب نمایید.'))
     }
 
-    const ordeData = {
+    const orderData = {
       delivery_method_id: deliveryMethod.id,
       delivery_method_area_rule_area_name:
         deliveryMethod.delivery_pricing_type === DeliveryPricingType.SELECTED_AREA
           ? deliveryMethodAreaRule?.area_name
           : undefined,
-      address_id: deliveryAddress.id,
+      delivery_address_id: deliveryAddress.id,
       billing_address_id: billingAddress.id,
 
       order_items: items
@@ -159,17 +157,13 @@ const Invoice = () => {
       note
     }
 
-    if (ordeData.order_items?.length) {
+    if (orderData.order_items?.length) {
       try {
-        if (isUser) {
-          await BasicService.createOrder(ordeData)
-        } else {
-          if (user) await BasicService.createOrderForOtherUser({ ...ordeData, user_id: +user.id })
-        }
+        if (user) await BasicService.createOrderForOtherUser({ ...orderData, user_id: +user.id })
 
         dispatch(resetCart())
 
-        dispatch(toastInfo(' سفارش شما با موفقیت ثبت شد. لطفا تایید پیش فاکتور خود را از طریق همین پنل پیگیری نمایید.'))
+        dispatch(toastInfo('سفارش با موفقیت ثبت شد.'))
 
         router.push('/invoice/list')
       } catch (error) {}
@@ -219,11 +213,11 @@ const Invoice = () => {
           <Divider sx={{ marginTop: 5, marginBottom: 5 }} />
 
           <Grid container spacing={2}>
-            {!isUser && (
+            {
               <Grid item xs={12} md={4}>
                 <UserSelect onChange={user => handleUserSelect(user)} />
               </Grid>
-            )}
+            }
             <Grid item xs={12} md={4}>
               <OrderInvoice
                 address={deliveryAddress}
@@ -329,16 +323,14 @@ const Invoice = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              {!isUser ? (
+              {
                 <Stack direction='row' spacing={2}>
                   <Typography variant='body2'>تایید شده توسط: </Typography>
                   <Typography variant='body2'>
                     {confirmed_rejected_by?.first_name || ''} {confirmed_rejected_by?.last_name || ''}
                   </Typography>
                 </Stack>
-              ) : (
-                <></>
-              )}
+              }
             </Grid>
           </Grid>
         </CardContent>
@@ -347,7 +339,7 @@ const Invoice = () => {
           <Grid container spacing={4} sx={{ marginTop: 10 }}>
             <Grid item xs={12} md={2}>
               <Button variant='contained' fullWidth onClick={handleSendInvoice}>
-                ثبت پیش فاکتور
+                ثبت سفارش 
               </Button>
             </Grid>
 

@@ -165,10 +165,10 @@ export class OrdersService {
       order.subtotal = subtotal;
       order.order_items = order_items;
 
-      order.delivery_address = delivery_address;
+      order.delivery_address = this.mapAddress(delivery_address);
 
       if (billing_address) {
-        order.billing_address = billing_address;
+        order.billing_address = this.mapAddress(billing_address);
       }
 
       // delivery
@@ -301,8 +301,6 @@ export class OrdersService {
             category: true,
           },
         },
-        delivery_address: true,
-        billing_address: true,
         confirmed_rejected_by: true,
         payments: true,
         delivery: {
@@ -367,7 +365,6 @@ export class OrdersService {
         delivery: {
           delivery_method: true,
         },
-        delivery_address: true,
       },
     );
 

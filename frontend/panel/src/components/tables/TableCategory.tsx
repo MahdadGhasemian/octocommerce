@@ -21,7 +21,7 @@ import {
 } from '@mui/material'
 
 // ** Icons Imports
-import { Delete, Pencil } from 'mdi-material-ui'
+import { Delete, Pencil, Plus } from 'mdi-material-ui'
 
 // ** MaterialReactTable Imports
 import MaterialReactTable, {
@@ -286,7 +286,8 @@ const TableCategory = (props: TableCategoryProps) => {
             onClick={() => handleAddModal()}
             size={isSmallScreen ? 'small' : 'large'}
           >
-            افزودن دسته بندی جدید
+            <span>افزودن دسته بندی جدید</span>
+            <Plus />
           </ButtonStyled>
         )}
       />

@@ -25,7 +25,7 @@ import {
 } from '@mui/material'
 
 // ** Icons Imports
-import { Eye } from 'mdi-material-ui'
+import { Eye, Plus } from 'mdi-material-ui'
 
 // ** MaterialReactTable Imports
 import MaterialReactTable, {
@@ -438,7 +438,8 @@ const TableAccount = () => {
             onClick={() => handleAddModal()}
             size={isSmallScreen ? 'small' : 'large'}
           >
-            افزودن کاربر مشتری
+            <span>افزودن کاربر مشتری جدید</span>
+            <Plus />
           </ButtonStyled>
         )}
       />

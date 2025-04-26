@@ -49,8 +49,6 @@ export const selectIsLogin = (state: RootState) => !!state.auth
 export const selectAccount = (state: RootState) => state.auth
 export const isInternalUser = (state: RootState) =>
   !!state.auth?.accesses?.find((item: { is_internal_user?: boolean }) => item.is_internal_user)
-export const isCustomerUser = (state: RootState) =>
-  !state.auth?.accesses?.find((item: { is_internal_user?: boolean }) => item.is_internal_user)
 
 const getFullName = (user: User): string => {
   const { first_name, last_name } = user

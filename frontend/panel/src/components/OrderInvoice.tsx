@@ -27,8 +27,9 @@ import BasicService, { Address } from '@/services/basic.service'
 // ** Component Imports
 import { NumericFormat, NumericFormatProps } from 'react-number-format'
 import { User } from '@/services/auth.service'
+
+// ** Redux Imports
 import { useSelector } from 'react-redux'
-import { isCustomerUser } from '@/redux/slices/authSlice'
 
 const ButtonStyled = styled(Button)<ButtonProps & { htmlFor?: string }>(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
@@ -86,23 +87,15 @@ const OrderInvoice = (props: Props) => {
   // ** Props
   const { address, onSelectAddress, label, user } = props
 
-  // ** Global State
-  const isUser = useSelector(isCustomerUser)
-
   // ** States
   const [addressList, setAddressList] = useState<Array<Address>>()
   const [newAddress, setNewAddress] = useState<Partial<Address>>()
   const [open, setOpen] = useState(false)
 
   const fetchAddresses = async () => {
-    if (isUser) {
-      const addresses = await BasicService.getAllAddress(1000, 1)
-      setAddressList(addresses.data)
-    } else {
-      const addressFilters = user ? [{ id: 'user_id', value: user.id, operator: '$eq' }] : []
-      const addresses = await BasicService.getAllAddress(1000, 1, undefined, addressFilters)
-      setAddressList(addresses.data)
-    }
+    const addressFilters = user ? [{ id: 'user_id', value: user.id, operator: '$eq' }] : []
+    const addresses = await BasicService.getAllAddress(1000, 1, undefined, addressFilters)
+    setAddressList(addresses.data)
   }
 
   const handleAddress = (value: Address | null | undefined) => {
@@ -113,14 +106,9 @@ const OrderInvoice = (props: Props) => {
 
   const handleAddNewAddress = async () => {
     if (newAddress) {
-      if (isUser) {
-        const address = await BasicService.createAddress({ ...newAddress })
+      if (user) {
+        const address = await BasicService.createAddressForOtherUser({ ...newAddress, user_id: +user.id })
         onSelectAddress(address)
-      } else {
-        if (user) {
-          const address = await BasicService.createAddressForOtherUser({ ...newAddress, user_id: +user.id })
-          onSelectAddress(address)
-        }
       }
 
       fetchAddresses()

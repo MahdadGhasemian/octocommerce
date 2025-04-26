@@ -24,7 +24,7 @@ import {
 } from '@mui/material'
 
 // ** Icons Imports
-import { Delete, Pencil } from 'mdi-material-ui'
+import { Delete, Pencil, Plus } from 'mdi-material-ui'
 
 // ** MaterialReactTable Imports
 import MaterialReactTable, {
@@ -138,7 +138,7 @@ const TableAccess = () => {
       }
 
       setRefreshKey(key => key + 1)
-    } catch (error) { }
+    } catch (error) {}
   }
 
   const handleDeleteRow = useCallback(async (row: MRT_Row<Access>) => {
@@ -152,7 +152,7 @@ const TableAccess = () => {
             await AuthService.deleteAccess(id)
 
             setRefreshKey(key => key + 1)
-          } catch (error) { }
+          } catch (error) {}
         })
         .catch()
     }
@@ -308,9 +308,9 @@ const TableAccess = () => {
         muiToolbarAlertBannerProps={
           isError
             ? {
-              color: 'error',
-              children: 'خطا در دریافت اطلاعات'
-            }
+                color: 'error',
+                children: 'خطا در دریافت اطلاعات'
+              }
             : undefined
         }
         onColumnFiltersChange={setColumnFilters}
@@ -367,7 +367,8 @@ const TableAccess = () => {
             onClick={() => handleAddModal()}
             size={isSmallScreen ? 'small' : 'large'}
           >
-            افزودن سطح دسترسی جدید
+            <span>افزودن سطح دسترسی جدید</span>
+            <Plus />
           </ButtonStyled>
         )}
       />

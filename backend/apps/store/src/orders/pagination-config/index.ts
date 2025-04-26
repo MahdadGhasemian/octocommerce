@@ -31,8 +31,6 @@ export const ORDER_PAGINATION_CONFIG: PaginateConfig<Order> = {
     'order_items',
     'order_items',
     'order_items.product',
-    'delivery_address',
-    'billing_address',
     'delivery',
     'delivery.delivery_method',
   ],

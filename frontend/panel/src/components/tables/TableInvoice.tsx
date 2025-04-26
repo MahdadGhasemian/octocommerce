@@ -36,10 +36,6 @@ import MaterialReactTable, {
 } from 'material-react-table'
 import { MRT_Localization_FA } from 'material-react-table/locales/fa'
 
-// ** Redux Imports
-import { isCustomerUser } from '@/redux/slices/authSlice'
-import { useSelector } from 'react-redux'
-
 // ** Services Import
 import BasicService, { Order, OrderStatus, PaymentStatus } from '@/services/basic.service'
 
@@ -56,9 +52,6 @@ const TableInvoice = () => {
   // ** Hook
   const router = useRouter()
   const theme = useTheme()
-
-  // ** Global State
-  const isUser = useSelector(isCustomerUser)
 
   // ** Vars
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
@@ -203,14 +196,14 @@ const TableInvoice = () => {
         }
       },
       {
-        accessorKey: 'address',
+        accessorKey: 'delivery_address',
         header: 'آدرس حمل',
-        accessorFn: row => `${row?.user?.last_name || ''}`,
+        accessorFn: row => `${row?.delivery_address?.city || ''}`,
         id: 'address',
-        size: 240,
+        size: 100,
         exportData: {
           width: 25,
-          accessorFn: (row: Partial<Order>) => `${row?.user?.last_name || ''}`
+          accessorFn: (row: Partial<Order>) => `${row?.delivery_address?.city || ''}`
         }
       },
       {
@@ -319,9 +312,7 @@ const TableInvoice = () => {
 
   // if (isLoading) return <p>در حال آماده سازی اطلاعات ...</p>
 
-  return isUser && isEmptyData ? (
-    <Empty message='شما هنوز هیچ سفارشی ثبت نکرده اید' buttonText='ثبت سفارش جدید' buttonHandler={onCreateNewInvoice} />
-  ) : (
+  return (
     <MaterialReactTable
       displayColumnDefOptions={{
         'mrt-row-actions': {
@@ -336,7 +327,7 @@ const TableInvoice = () => {
       enableRowSelection={false}
       initialState={{
         showColumnFilters: false,
-        columnVisibility: { id: false, account: !isUser }
+        columnVisibility: { id: false, account: true }
       }}
       positionActionsColumn='last'
       enableHiding={false}
@@ -405,7 +396,7 @@ const TableInvoice = () => {
             onClick={onCreateNewInvoice}
             size={isSmallScreen ? 'small' : 'large'}
           >
-            {!isSmallScreen && <span>پیش فاکتور جدید</span>}
+            {!isSmallScreen && <span>ثبت سفارش جدید</span>}
             <Plus />
           </ButtonStyled>
         </Box>

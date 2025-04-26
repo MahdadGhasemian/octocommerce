@@ -287,8 +287,8 @@ export type Order = {
   created_at: Date
   updated_at: Date
   user: User
-  address_id: number
-  address: Address
+  delivery_address_id: number
+  delivery_address: Address
   billing_address_id: number
   billing_address: Address
   order_items: Array<OrderItem>
