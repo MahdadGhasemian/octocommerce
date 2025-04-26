@@ -41,13 +41,19 @@ import { MRT_Localization_FA } from 'material-react-table/locales/fa'
 
 // ** Services Import
 import BasicService, { Address } from '@/services/basic.service'
+import { User } from '@/services/auth.service'
+import { InputColumnFiltersModel } from '@/services/param'
 
 // ** Comnfirmation Import
 import { useConfirmation } from '@/context/confirmationContext'
 
 // ** Import libraries
 import ExportButton from '../ExportButton'
-import { InputColumnFiltersModel } from '@/services/param'
+import UserSelect from '../UserSelect'
+
+// ** Redux Imports
+import { isCustomerUser } from '@/redux/slices/authSlice'
+import { useSelector } from 'react-redux'
 
 const ButtonStyled = styled(Button)<ButtonProps>(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
@@ -67,7 +73,10 @@ const TableAddress = () => {
   // ** Confirm
   const { confirm } = useConfirmation()
 
-  //data and fetching state
+  // ** Global State
+  const isUser = useSelector(isCustomerUser)
+
+  // ** States
   const [data, setData] = useState<Address[]>([])
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -126,7 +135,11 @@ const TableAddress = () => {
 
   const handleCreateNewRow = async (values: Address) => {
     try {
-      await BasicService.createAddress(values)
+      if (isUser) {
+        await BasicService.createAddress(values)
+      } else {
+        await BasicService.createAddressForOtherUser({ ...values, user_id: +values.user.id })
+      }
 
       setRefreshKey(key => key + 1)
     } catch (error) {}
@@ -231,17 +244,6 @@ const TableAddress = () => {
           exportData: {
             width: 20
           }
-        },
-        {
-          accessorKey: 'name',
-          header: 'نام',
-          size: 200,
-          exportData: {
-            width: 20
-          },
-          muiTableBodyCellEditTextFieldProps: ({ cell }: { cell: any }) => ({
-            ...getCommonEditTextFieldProps(cell)
-          })
         },
         {
           accessorKey: 'phone',
@@ -436,6 +438,11 @@ export const CreateNewAccountModal = ({ open, columns, onClose, onSubmit }: Crea
         return acc
       }, {} as any)
   )
+  const [user, setUser] = useState<User | null>(null)
+
+  const handleUserSelect = (user: User | null) => {
+    setValues({ ...values, user })
+  }
 
   const handleSubmit = () => {
     //put your validation logic here
@@ -453,9 +460,11 @@ export const CreateNewAccountModal = ({ open, columns, onClose, onSubmit }: Crea
               width: '100%',
               minWidth: { xs: '300px', sm: '360px', md: '400px' },
               gap: '1.5rem',
-              marginTop: 1
+              marginTop: 4
             }}
           >
+            <UserSelect onChange={user => handleUserSelect(user)} />
+
             {columns
               .filter(column => !filterItems.includes(String(column.id)))
               .map(column => (
