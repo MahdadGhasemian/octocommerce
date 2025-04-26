@@ -196,14 +196,14 @@ const TableInvoice = () => {
         }
       },
       {
-        accessorKey: 'address',
+        accessorKey: 'delivery_address',
         header: 'آدرس حمل',
-        accessorFn: row => `${row?.user?.last_name || ''}`,
+        accessorFn: row => `${row?.delivery_address?.city || ''}`,
         id: 'address',
-        size: 240,
+        size: 100,
         exportData: {
           width: 25,
-          accessorFn: (row: Partial<Order>) => `${row?.user?.last_name || ''}`
+          accessorFn: (row: Partial<Order>) => `${row?.delivery_address?.city || ''}`
         }
       },
       {

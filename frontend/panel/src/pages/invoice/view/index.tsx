@@ -113,7 +113,7 @@ const Invoice = (props: { categoriesTree: Array<CategoryTree> }) => {
   return (
     <>
       <Head>
-        <title>{`پیش فاکتور ${order_invoice_number}`}</title>
+        <title>{`سفارش ${order_invoice_number}`}</title>
       </Head>
       <Card>
         <TabContext value={value}>
@@ -125,7 +125,7 @@ const Invoice = (props: { categoriesTree: Array<CategoryTree> }) => {
                   <ReceiptTextCheckOutline />
                   <TabName>
                     <span>1-</span>
-                    <span>پیش فاکتور</span>
+                    <span>سفارش</span>
                   </TabName>
                 </Box>
               }

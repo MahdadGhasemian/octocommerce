@@ -136,13 +136,13 @@ const Invoice = () => {
       return dispatch(toastError('لطفا آدرس صورتحساب را انتخاب نمایید.'))
     }
 
-    const ordeData = {
+    const orderData = {
       delivery_method_id: deliveryMethod.id,
       delivery_method_area_rule_area_name:
         deliveryMethod.delivery_pricing_type === DeliveryPricingType.SELECTED_AREA
           ? deliveryMethodAreaRule?.area_name
           : undefined,
-      address_id: deliveryAddress.id,
+      delivery_address_id: deliveryAddress.id,
       billing_address_id: billingAddress.id,
 
       order_items: items
@@ -157,9 +157,9 @@ const Invoice = () => {
       note
     }
 
-    if (ordeData.order_items?.length) {
+    if (orderData.order_items?.length) {
       try {
-        if (user) await BasicService.createOrderForOtherUser({ ...ordeData, user_id: +user.id })
+        if (user) await BasicService.createOrderForOtherUser({ ...orderData, user_id: +user.id })
 
         dispatch(resetCart())
 
@@ -339,7 +339,7 @@ const Invoice = () => {
           <Grid container spacing={4} sx={{ marginTop: 10 }}>
             <Grid item xs={12} md={2}>
               <Button variant='contained' fullWidth onClick={handleSendInvoice}>
-                ثبت پیش فاکتور
+                ثبت سفارش 
               </Button>
             </Grid>
 
